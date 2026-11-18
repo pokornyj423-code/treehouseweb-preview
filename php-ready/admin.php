@@ -18,22 +18,17 @@
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Manrope:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400..800&display=swap" rel="stylesheet">
     <script>(function(){var d=document.documentElement;d.setAttribute('data-nav2','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('js-anim');try{if(sessionStorage.getItem('thw-wipe')==='1')d.classList.add('wipe-in')}catch(e){}setTimeout(function(){if(!window.__fxReady){d.classList.remove('js-anim');d.classList.remove('wipe-in')}},4500)})()</script>
     <link rel="icon" type="image/svg+xml" href="assets/images/treehouseweb-mark-light.svg">
     <link rel="stylesheet" href="assets/css/site.css">
-    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
     <script src="assets/js/calculator.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
     <script src="assets/js/nav.js" defer></script>
     <script src="assets/js/fx.js" defer></script>
-    <script type="module" src="assets/js/scene.js"></script>
 </head>
-<body id="top">
-<canvas id="scene" aria-hidden="true"></canvas>
-<div class="veil" aria-hidden="true"></div>
-<div class="fallback-tree" aria-hidden="true"><img src="assets/images/treehouseweb-mark-light.svg" alt="" width="190" height="230"></div>
+<body id="top" class="kid">
 <a class="skip-link" href="#main">Přejít na obsah</a>
 <header class="site-header">
     <a class="brand" href="index.php?lang=cz" aria-label="Tree House Web"><img class="brand-symbol" src="assets/images/treehouseweb-mark-light.svg" alt="" width="34" height="42"><span>Tree House Web<span class="brand-dot">.</span></span></a>

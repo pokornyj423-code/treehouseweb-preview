@@ -17,22 +17,21 @@
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Manrope:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400..800&display=swap" rel="stylesheet">
     <script>(function(){var d=document.documentElement;d.setAttribute('data-nav2','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('js-anim');try{if(sessionStorage.getItem('thw-wipe')==='1')d.classList.add('wipe-in')}catch(e){}setTimeout(function(){if(!window.__fxReady){d.classList.remove('js-anim');d.classList.remove('wipe-in')}},4500)})()</script>
     <link rel="icon" type="image/svg+xml" href="assets/images/treehouseweb-mark-light.svg">
+    <link rel="preload" as="image" href="assets/images/hero/hero-m-720.avif" type="image/avif" media="(max-width:760px)" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/images/hero/hero-d-1600.avif" type="image/avif" media="(min-width:761px)" fetchpriority="high">
     <link rel="stylesheet" href="assets/css/site.css">
-    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
     <script src="assets/js/calculator.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
     <script src="assets/js/nav.js" defer></script>
+    <script src="assets/js/hero.js" defer></script>
     <script src="assets/js/fx.js" defer></script>
-    <script type="module" src="assets/js/scene.js"></script>
 </head>
-<body id="top">
-<canvas id="scene" aria-hidden="true"></canvas>
-<div class="veil" aria-hidden="true"></div>
-<div class="fallback-tree" aria-hidden="true"><img src="assets/images/treehouseweb-mark-light.svg" alt="" width="190" height="230"></div>
+<body id="top" class="kid home-photo">
 <a class="skip-link" href="#main">Přejít na obsah</a>
 <header class="site-header">
     <a class="brand" href="index.php?lang=cz" aria-label="Tree House Web"><img class="brand-symbol" src="assets/images/treehouseweb-mark-light.svg" alt="" width="34" height="42"><span>Tree House Web<span class="brand-dot">.</span></span></a>
@@ -44,39 +43,36 @@
     </div>
 </header>
 <main id="main">
-    <section class="hero wrap" aria-labelledby="hero-title">
-        <div class="hero-surface">
-            <p class="eyebrow" data-hero><span class="status-dot"></span>Nezávislé webové studio · Návrh, vývoj, správa</p>
-            <h1 id="hero-title" data-split="hero">Tree House Web<span class="brand-dot">.</span></h1>
-            <h2 data-split="hero">Weby, kterým je rozumět.<br>Technika, která drží <em>krok.</em></h2>
-            <p class="hero-description" data-hero>Tvořím a modernizuji firemní weby. Od jednoduché jednostránkové prezentace až po bezpečnou migraci starého PHP.</p>
-            <div class="hero-chips" data-hero>
-                <a class="chip" href="#cenik"><span>Normální web</span><strong>9&nbsp;999&nbsp;Kč</strong></a>
-                <a class="chip is-3d" href="#cenik"><span>3D web</span><strong>15&nbsp;999&nbsp;Kč</strong></a>
-            </div>
-            <div class="hero-actions" data-hero>
-                <a class="button primary" href="estimate.php?lang=cz" data-intent="estimate">Zjistit cenu webu<img class="icon" src="assets/icons/arrow-up-right.svg" width="20" height="20" alt="" aria-hidden="true"></a>
-                <a class="button" href="#cenik">Zobrazit ceník</a>
-            </div>
-            <p class="hero-note" data-hero>Návrh úvodní stránky předem bez závazků. Doména od 300 Kč ročně.</p>
-            <button class="sr-focus" type="button" data-open-window aria-haspopup="dialog">Podívat se do okna domku</button>
-            <a class="hero-work" data-hero href="references.php?lang=cz">Prohlédnout reference<img class="icon" src="assets/icons/arrow-right.svg" width="20" height="20" alt="" aria-hidden="true"></a>
+    <section class="photo-hero" aria-labelledby="hero-title">
+        <div class="ph-stage" data-ph data-cfg='{"d":{"w":[0.745,0.51],"p":[0.75,0.5],"ratio":1.7778,"lamps":[]},"m":{"w":[0.60,0.385],"p":[0.5,0.5],"ratio":0.5625,"lamps":[]}}'>
+            <div class="ph-zoom"><div class="ph-kb"><picture><source media="(max-width:760px)" type="image/avif" srcset="assets/images/hero/hero-m-576.avif 576w, assets/images/hero/hero-m-720.avif 720w" sizes="100vw"><source media="(max-width:760px)" type="image/webp" srcset="assets/images/hero/hero-m-576.webp 576w, assets/images/hero/hero-m-720.webp 720w" sizes="100vw"><source media="(max-width:760px)" srcset="assets/images/hero/hero-m-576.jpg 576w, assets/images/hero/hero-m-720.jpg 720w" sizes="100vw"><source type="image/avif" srcset="assets/images/hero/hero-d-1024.avif 1024w, assets/images/hero/hero-d-1600.avif 1600w" sizes="100vw"><source type="image/webp" srcset="assets/images/hero/hero-d-1024.webp 1024w, assets/images/hero/hero-d-1600.webp 1600w" sizes="100vw"><img class="ph-img" src="assets/images/hero/hero-d-1600.jpg" srcset="assets/images/hero/hero-d-1024.jpg 1024w, assets/images/hero/hero-d-1600.jpg 1600w" sizes="100vw" width="1600" height="900" alt="Domek na stromě v noci. V osvětleném okně sedí muž u počítače a řeší problém s webem." fetchpriority="high" decoding="async"></picture><span class="ph-glow" aria-hidden="true"></span></div></div>
+            <canvas class="ph-3d" aria-hidden="true"></canvas>
+            <div class="ph-mist" aria-hidden="true"><i></i><i></i></div>
+            <canvas class="ph-fx" aria-hidden="true"></canvas>
+            <div class="ph-shade" aria-hidden="true"></div>
         </div>
-        <div class="scroll-cue" aria-hidden="true"><i></i>Posuňte dolů, strom se otáčí</div>
-        <div class="principle-strip" data-reveal><span><span class="mono">01</span>Nejdřív návrh, potom platba</span><span><span class="mono">02</span>Váš kód. Vaše vlastnictví.</span><span><span class="mono">03</span>Web na roky, ne závislost na dodavateli.</span></div>
-    </section>
-<div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Normální web 9 999 Kč</span><i>✦</i><span>3D web 15 999 Kč</span><i>✦</i><span>Nejdřív návrh, potom platba</span><i>✦</i><span>Váš kód. Vaše vlastnictví.</span><i>✦</i><span>Web na roky, ne závislost na dodavateli</span><i>✦</i><span>Normální web 9 999 Kč</span><i>✦</i><span>3D web 15 999 Kč</span><i>✦</i><span>Nejdřív návrh, potom platba</span><i>✦</i><span>Váš kód. Vaše vlastnictví.</span><i>✦</i><span>Web na roky, ne závislost na dodavateli</span><i>✦</i></div></div>    <section class="wrap window-teaser" id="okno" aria-labelledby="okno-title">
-        <div class="wt-inner panel glow" data-reveal>
-            <div class="wt-copy">
-                <p class="eyebrow">Světlo v okně</p>
-                <h2 id="okno-title">Za oknem se svítí.<br><em>Pojďte se podívat.</em></h2>
-                <p>Krátký pohled dovnitř domku: proč vznikl Tree House Web.</p>
-                <button class="button primary" type="button" data-open-window aria-haspopup="dialog">Podívat se do okna<img class="icon" src="assets/icons/arrow-right.svg" width="20" height="20" alt="" aria-hidden="true"></button>
+        <div class="hero wrap ph-content">
+            <div class="hero-surface">
+                <p class="eyebrow" data-hero><span class="status-dot"></span>Tree House Web · Nezávislé webové studio</p>
+                <h1 id="hero-title" data-split="hero">Hledání webaře nemusí být <em>trápení</em><span class="brand-dot">.</span></h1>
+                <h2 data-split="hero">Weby, kterým je rozumět.<br>Technika, která drží <em>krok.</em></h2>
+                <p class="hero-description" data-hero>Tvořím a modernizuji firemní weby. Od jednoduché jednostránkové prezentace až po bezpečnou migraci starého PHP.</p>
+                <div class="hero-chips" data-hero>
+                    <a class="chip" href="#cenik"><span>Normální web</span><strong>9&nbsp;999&nbsp;Kč</strong></a>
+                    <a class="chip is-3d" href="#cenik"><span>3D web</span><strong>15&nbsp;999&nbsp;Kč</strong></a>
+                </div>
+                <div class="hero-actions" data-hero>
+                    <a class="button primary" href="estimate.php?lang=cz" data-intent="estimate">Kalkulačka<img class="icon" src="assets/icons/arrow-up-right.svg" width="20" height="20" alt="" aria-hidden="true"></a>
+                    <a class="button" href="#cenik">Ceník</a>
+                </div>
+                <p class="hero-note" data-hero>Návrh úvodní stránky předem bez závazků. Doména od 300 Kč ročně.</p>
+                <a class="hero-work" data-hero href="references.php?lang=cz">Prohlédnout reference<img class="icon" src="assets/icons/arrow-right.svg" width="20" height="20" alt="" aria-hidden="true"></a>
             </div>
-            <div class="wt-window" aria-hidden="true"><i></i></div>
         </div>
+        <div class="scroll-cue" aria-hidden="true"><i></i>Posuňte dolů</div>
     </section>
-
+    <div class="wrap principle-wrap"><div class="principle-strip" data-reveal><span><span class="mono">01</span>Nejdřív návrh, potom platba</span><span><span class="mono">02</span>Váš kód. Vaše vlastnictví.</span><span><span class="mono">03</span>Web na roky, ne závislost na dodavateli.</span></div></div>
+<div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Normální web 9 999 Kč</span><i>✦</i><span>3D web 15 999 Kč</span><i>✦</i><span>Nejdřív návrh, potom platba</span><i>✦</i><span>Váš kód. Vaše vlastnictví.</span><i>✦</i><span>Web na roky, ne závislost na dodavateli</span><i>✦</i><span>Normální web 9 999 Kč</span><i>✦</i><span>3D web 15 999 Kč</span><i>✦</i><span>Nejdřív návrh, potom platba</span><i>✦</i><span>Váš kód. Vaše vlastnictví.</span><i>✦</i><span>Web na roky, ne závislost na dodavateli</span><i>✦</i></div></div>
     <section class="section wrap" id="services" aria-labelledby="services-title">
         <p class="eyebrow" data-reveal>01 / Co děláme</p>
         <div class="section-heading" data-reveal><h2 id="services-title">Postavit to podstatné.<br><em>Zachovat to dobré.</em></h2><p>Ne každý web potřebuje začít od nuly. Zjistíme, co funguje, co překáží a co vaše podnikání doopravdy potřebuje.</p></div>
@@ -172,60 +168,5 @@
     </section>
 </main>
 <footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="brand" href="index.php?lang=cz"><img class="brand-symbol" src="assets/images/treehouseweb-mark-light.svg" alt="" width="34" height="42"><span>Tree House Web<span class="brand-dot">.</span></span></a><p>Nezávisle. Promyšleně. Poctivě.</p><a class="text-link" href="index.php?lang=cz#top">Zpět nahoru<img class="icon" src="assets/icons/arrow-up-right.svg" width="18" height="18" alt="" aria-hidden="true"></a></div><nav class="footer-legal" aria-label="Stránky"><a href="sluzby.php?lang=cz">Služby</a><a href="normalni-web.php?lang=cz">Normální web</a><a href="3d-web.php?lang=cz">3D web</a><a href="jak-pracujeme.php?lang=cz">Jak pracujeme</a><a href="references.php?lang=cz">Reference</a></nav><nav class="footer-legal" aria-label="Legal information"><a href="privacy.php?lang=cz">Soukromí</a><a href="legal-notice.php?lang=cz">Identifikace provozovatele</a><a href="terms.php?lang=cz">Podmínky spolupráce</a><a href="admin.php?lang=cz">Správa studia ↗</a></nav><div class="footer-bottom mono"><span>© 2026 TreeHouseWeb. Webové řemeslo a modernizace starších systémů.</span></div></div></footer>
-<div class="winview" id="winview" role="dialog" aria-modal="true" aria-labelledby="wv-title" hidden>
-    <button class="wv-close" type="button"><span>Zpět ven</span><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg></button>
-    <div class="wv-grid">
-        <div class="wv-frame">
-            <svg class="wv-il" viewBox="0 0 480 360" role="img" aria-label="Ilustrace: člověk u počítače přemýšlí, kdo mu udělá web. Na obrazovce se objeví Tree House Web.">
-                <defs>
-                    <radialGradient id="lampGlow"><stop offset="0" stop-color="#ffb454" stop-opacity=".55"/><stop offset="1" stop-color="#ffb454" stop-opacity="0"/></radialGradient>
-                    <radialGradient id="screenGlow"><stop offset="0" stop-color="#86d6a2" stop-opacity=".5"/><stop offset="1" stop-color="#86d6a2" stop-opacity="0"/></radialGradient>
-                </defs>
-                <circle cx="408" cy="205" r="120" fill="url(#lampGlow)" class="il-lamp-glow"/>
-                <ellipse cx="255" cy="244" rx="170" ry="120" fill="url(#screenGlow)" class="il-glow"/>
-                <path d="M408 304V222" stroke="#b07a52" stroke-width="5" stroke-linecap="round"/>
-                <path d="M384 224L432 224L420 186L396 186Z" fill="#ffb454"/>
-                <rect x="30" y="302" width="430" height="10" rx="4" fill="#6b4630"/>
-                <path d="M64 312v44M426 312v44" stroke="#4a3022" stroke-width="8" stroke-linecap="round"/>
-                <rect x="38" y="222" width="104" height="84" rx="18" fill="#1a2822"/>
-                <path d="M58 304C58 244 76 222 108 222C140 222 158 244 158 304Z" fill="#2b3d34" stroke="#ffb454" stroke-opacity=".28" stroke-width="2"/>
-                <circle cx="108" cy="194" r="25" fill="#34493e" stroke="#ffb454" stroke-opacity=".3" stroke-width="2"/>
-                <path d="M152 270C172 258 166 222 136 210" stroke="#34493e" stroke-width="15" fill="none" stroke-linecap="round"/>
-                <rect x="172" y="190" width="170" height="110" rx="9" fill="#0b1712" stroke="#3f6350" stroke-width="3"/>
-                <path d="M152 302h210l-13-9H165z" fill="#25372e"/>
-                <g class="il-search">
-                    <rect x="190" y="206" width="134" height="22" rx="11" fill="none" stroke="#86d6a2" stroke-opacity=".7" stroke-width="1.6"/>
-                    <circle cx="203" cy="217" r="4.5" fill="none" stroke="#86d6a2" stroke-width="1.6"/><path d="M207 221l4 4" stroke="#86d6a2" stroke-width="1.6" stroke-linecap="round"/>
-                    <text x="218" y="221" font-size="11" fill="#b9c6b8" font-family="Manrope,sans-serif">web na míru…</text>
-                    <rect x="190" y="244" width="112" height="6" rx="3" fill="#41584c"/><rect x="190" y="259" width="86" height="6" rx="3" fill="#41584c"/><rect x="190" y="274" width="120" height="6" rx="3" fill="#41584c"/>
-                </g>
-                <g class="il-solved">
-                    <image href="assets/images/treehouseweb-mark-light.svg" x="231" y="200" width="48" height="58"/>
-                    <text x="255" y="282" font-size="14" text-anchor="middle" fill="#f1f4ec" font-family="Fraunces,serif" font-weight="600">Tree House Web<tspan fill="#ffb454">.</tspan></text>
-                </g>
-                <circle cx="146" cy="160" r="3.5" fill="none" stroke="#f1f4ec" stroke-opacity=".7"/><circle cx="158" cy="143" r="6" fill="none" stroke="#f1f4ec" stroke-opacity=".7"/>
-                <ellipse cx="200" cy="96" rx="44" ry="32" fill="rgba(8,17,14,.55)" stroke="#f1f4ec" stroke-opacity=".8" stroke-width="1.6"/>
-                <text class="il-q" x="200" y="111" font-size="44" text-anchor="middle" fill="#ffb454" font-family="Fraunces,serif">?</text>
-                <path class="il-ok" d="M181 98l13 14 26-30" fill="none" stroke="#86d6a2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </div>
-        <div class="wv-copy" aria-live="polite">
-            <div class="wv-step is-active">
-                <p class="eyebrow">Zná to hodně lidí</p>
-                <h2 id="wv-title">Potřebujete web.<br><em>Jen nevíte, koho se zeptat.</em></h2>
-                <p>Nabídek je spousta, srozumitelných odpovědí málo.</p>
-                <button class="button primary wv-next" type="button">Co s tím?<img class="icon" src="assets/icons/arrow-right.svg" width="20" height="20" alt="" aria-hidden="true"></button>
-            </div>
-            <div class="wv-step" aria-hidden="true">
-                <p class="eyebrow">Tree House Web.</p>
-                <h2>Weby, kterým<br><em>je rozumět.</em></h2>
-                <p>Nejdřív návrh, potom platba. Váš kód, vaše vlastnictví. Normální web 9&nbsp;999 Kč, 3D web 15&nbsp;999 Kč.</p>
-                <div class="hero-actions"><a class="button primary" href="estimate.php?lang=cz">Zjistit cenu webu<img class="icon" src="assets/icons/arrow-up-right.svg" width="20" height="20" alt="" aria-hidden="true"></a><a class="button" href="#contact" data-close-window>Napsat poptávku</a></div>
-            </div>
-            <div class="wv-dots" aria-hidden="true"><i class="on"></i><i></i></div>
-        </div>
-    </div>
-</div>
-<script src="assets/js/story.js" defer></script>
 </body>
 </html>

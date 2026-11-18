@@ -583,3 +583,144 @@ html.over-window .cursor-ring{width:68px;height:68px;margin:-34px 0 0 -34px;back
 html.win-open .window-hint{opacity:0}
 @media(max-width:760px){.window-hint{font-size:12px;padding:6px 11px 6px 9px}}
 @media(max-width:760px){.hero{padding-top:34svh}}
+
+/* ================= Hero s obrázkem přes celou obrazovku (hlavní stránka) ================= */
+body.home-photo{background:radial-gradient(1000px 700px at 85% 8%,rgba(52,84,140,.20),transparent 70%),#08110e fixed}
+body.home-photo .veil,body.home-photo #scene,body.home-photo .fallback-tree{display:none}
+.photo-hero{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;background:#060b14}
+.photo-hero::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:24%;z-index:4;pointer-events:none;background:linear-gradient(180deg,transparent,#08110e 92%)}
+.ph-stage{position:absolute;inset:0;z-index:0;overflow:hidden}
+.ph-zoom{position:absolute;inset:0;transform-origin:var(--wx,70%) var(--wy,50%);will-change:transform}
+.ph-kb{position:absolute;inset:0;transform-origin:var(--wx,70%) var(--wy,50%);animation:phkb 46s ease-in-out infinite alternate}
+@keyframes phkb{from{transform:scale(1.02)}to{transform:scale(1.10)}}
+.ph-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%;display:block;max-width:none}
+.ph-glow{position:absolute;left:var(--wx,70%);top:var(--wy,50%);width:calc(var(--wr,160px)*2.6);height:calc(var(--wr,160px)*2.6);margin:calc(var(--wr,160px)*-1.3) 0 0 calc(var(--wr,160px)*-1.3);border-radius:50%;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(255,196,110,.55) 0,rgba(255,170,70,.26) 24%,rgba(255,150,50,.08) 48%,transparent 70%);animation:phbreath 6.5s ease-in-out infinite}
+@keyframes phbreath{0%,100%{opacity:.55;transform:scale(.94)}35%{opacity:.95;transform:scale(1.04)}52%{opacity:.8}60%{opacity:.98;transform:scale(1.06)}}
+.ph-lamp{position:absolute;width:calc(var(--lr,30px)*2);height:calc(var(--lr,30px)*2);margin:calc(var(--lr,30px)*-1) 0 0 calc(var(--lr,30px)*-1);border-radius:50%;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(255,200,110,.6) 0,rgba(255,170,70,.2) 40%,transparent 70%);animation:phlamp 4.2s ease-in-out infinite}
+@keyframes phlamp{0%,100%{opacity:.45}30%{opacity:.9}55%{opacity:.6}75%{opacity:1}}
+.ph-mist{position:absolute;left:-15%;right:-15%;bottom:-4%;height:48%;z-index:1;pointer-events:none;opacity:.9}
+.ph-mist i{position:absolute;inset:0;background:radial-gradient(ellipse 38% 46% at 20% 70%,rgba(150,175,215,.20),transparent 70%),radial-gradient(ellipse 34% 40% at 58% 60%,rgba(140,165,205,.16),transparent 70%),radial-gradient(ellipse 30% 44% at 88% 76%,rgba(150,175,215,.18),transparent 70%);animation:phmist 70s linear infinite alternate;filter:blur(8px)}
+.ph-mist i+i{animation-duration:95s;animation-direction:alternate-reverse;opacity:.7;transform:scaleX(-1)}
+@keyframes phmist{from{translate:-6% 0}to{translate:6% 0}}
+.ph-fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.ph-shade{position:absolute;inset:0;z-index:3;pointer-events:none;background:
+  linear-gradient(90deg,rgba(3,7,14,.82) 0%,rgba(3,7,14,.58) 28%,rgba(3,7,14,.18) 52%,transparent 66%),
+  linear-gradient(180deg,rgba(3,7,14,.55) 0,transparent 20%)}
+.ph-content{position:relative;z-index:5;padding-top:clamp(110px,14vh,170px);padding-bottom:clamp(60px,9vh,110px);min-height:0;justify-content:center;flex:1}
+.photo-hero .hero-surface{max-width:640px}
+.photo-hero h1{font-size:clamp(44px,6.6vw,104px);line-height:.96;text-wrap:balance;margin-bottom:20px}
+.photo-hero h2{font-size:clamp(20px,2.4vw,34px)}
+.photo-hero .hero-note,.photo-hero .hero-description{text-shadow:0 1px 14px rgba(0,0,0,.9)}
+.photo-hero .scroll-cue{position:absolute;z-index:5;left:var(--gutter,24px);bottom:26px;margin:0}
+.principle-wrap{margin-top:0;padding-bottom:clamp(20px,4vw,50px)}
+.principle-wrap .principle-strip{margin-top:0}
+html.ph-static .ph-kb,html.ph-static .ph-glow,html.ph-static .ph-lamp,html.ph-static .ph-mist i{animation:none}
+html.ph-static .ph-fx{display:none}
+html:not(.ph-ready) .ph-img{opacity:0}
+.ph-img{transition:opacity .9s ease}
+@media(max-width:760px){
+  .photo-hero{min-height:100svh}
+  .ph-shade{background:linear-gradient(0deg,rgba(3,7,12,.94) 0,rgba(3,7,12,.82) 26%,rgba(3,7,12,.35) 48%,transparent 66%),linear-gradient(180deg,rgba(3,7,14,.55) 0,transparent 16%)}
+  .ph-content{justify-content:flex-end;padding-top:0;padding-bottom:36px;flex:0 0 auto;margin-top:auto}
+  .photo-hero h1{font-size:clamp(34px,10.4vw,46px);margin-bottom:12px}
+  .photo-hero h2{font-size:19px;margin-bottom:14px}
+  .photo-hero .hero-description,.photo-hero .hero-note,.photo-hero .hero-work,.photo-hero .scroll-cue{display:none}
+  .photo-hero .eyebrow{margin-bottom:10px;font-size:11px}
+  .photo-hero .hero-chips{margin-bottom:12px;gap:8px}
+  .photo-hero .hero-actions{margin-bottom:0}
+  .ph-mist i+i{display:none}
+}
+@media(min-width:761px) and (max-width:1000px){.ph-shade{background:linear-gradient(90deg,rgba(3,7,14,.85) 0,rgba(3,7,14,.6) 40%,transparent 80%)}}
+@media(prefers-reduced-motion:reduce){.ph-kb,.ph-glow,.ph-lamp,.ph-mist i{animation:none}.ph-fx{display:none}.ph-img{transition:none}}
+
+/* ================= „Nakreslilo to dítě“: pastelky, papír, hravé písmo ================= */
+:root{--bg:#12308f;--ink:#fff9e8;--muted:#d3defc;--line:rgba(255,249,232,.38);--moss:#8de86a;--moss-d:#2f8a1f;--amber:#ffd42a;--rust:#ff5a4e;--wood:#9a5a2b;
+  --panel:rgba(10,28,104,.80);--panel-2:rgba(10,26,96,.92);--sans:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;--display:"Patrick Hand","Comic Sans MS","Chalkboard SE",cursive;--mono:"Nunito",system-ui,sans-serif;--crayon:#1b1220;
+  --wob:255px 18px 225px 18px/18px 225px 18px 255px;--wob2:18px 245px 16px 235px/235px 16px 245px 18px}
+body.kid,body.kid *{font-synthesis:none}
+body.kid{background:radial-gradient(1100px 700px at 85% 0%,rgba(70,110,230,.35),transparent 70%),radial-gradient(900px 700px at 0% 70%,rgba(40,160,70,.18),transparent 70%),#12308f fixed;font-size:17px}
+body.kid::after{opacity:.16;mix-blend-mode:soft-light}
+body.kid h1,body.kid h2,body.kid h3,body.kid h4{font-weight:400;letter-spacing:0;line-height:1.02}
+body.kid h2{font-size:clamp(38px,5.4vw,76px)}
+body.kid .eyebrow,body.kid .mono{font-family:var(--sans);font-weight:800;letter-spacing:.08em}
+body.kid .eyebrow{color:var(--amber)}
+body.kid h1 em,body.kid h2 em,body.kid h3 em,body.kid .hero em{font-style:normal;color:var(--amber);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 7 Q12 1 22 7 T42 6 T62 7 T82 5 T102 7 T118 5' fill='none' stroke='%23ff5a4e' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E") 0 100%/100% .26em no-repeat;padding-bottom:.16em}
+body.kid .brand{font-family:var(--display);font-weight:400;font-size:26px}
+body.kid .site-header{background:rgba(14,36,120,.96);backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:3px dashed rgba(255,249,232,.4)}
+body.kid .main-nav a,body.kid .header-contact{font-family:var(--sans);font-weight:800}
+/* tlačítka a štítky: nepravidelný obrys černou pastelkou, posunutý stín, vrtění */
+body.kid .button,body.kid .header-contact,body.kid .chip,body.kid .tag{border:3px solid var(--crayon);border-radius:var(--wob);font-family:var(--sans);font-weight:800}
+body.kid .button{background:#fff3c9;color:var(--crayon);box-shadow:4px 4px 0 var(--crayon);text-shadow:none}
+body.kid .button:hover{background:#fff;transform:translateY(-3px) rotate(-1.2deg);animation:wiggle .5s ease}
+body.kid .button.primary,body.kid .header-contact{background:var(--amber);color:var(--crayon);box-shadow:4px 4px 0 var(--crayon)}
+body.kid .button.primary:hover{background:#ffe36b;box-shadow:6px 6px 0 var(--crayon)}
+body.kid .header-contact{padding:10px 18px}
+body.kid .header-contact .icon,body.kid .button .icon{filter:brightness(0)}
+@keyframes wiggle{0%{rotate:0deg}25%{rotate:-3deg}55%{rotate:2.5deg}80%{rotate:-1.2deg}100%{rotate:0deg}}
+body.kid .chip{background:rgba(255,249,232,.94);color:var(--crayon);box-shadow:3px 3px 0 var(--crayon);backdrop-filter:none}
+body.kid .chip span{color:#4a3a2a}body.kid .chip strong{color:#c02a1a;font-family:var(--display);font-weight:400;font-size:28px}
+body.kid .chip.is-3d{background:#ffe36b}
+/* karty a panely */
+body.kid .panel,body.kid .service-card,body.kid .steps li,body.kid .project,body.kid .estimate-card,body.kid .contact-card,body.kid .feat-grid li,body.kid .principle-strip{backdrop-filter:none;-webkit-backdrop-filter:none}
+body.kid .panel,body.kid .principle-strip{border:3px solid rgba(255,249,232,.9);border-radius:var(--wob2);background:var(--panel);box-shadow:5px 5px 0 rgba(4,10,50,.55)}
+body.kid .principle-strip{gap:0;background:var(--panel)}body.kid .principle-strip>span{background:transparent}
+body.kid .marquee{border-block:3px dashed rgba(255,249,232,.5);background:rgba(8,20,80,.5)}
+body.kid .marquee span{-webkit-text-stroke:0;color:var(--ink);font-weight:400}
+body.kid .marquee i{color:var(--amber)}
+/* ceník: dvě „načárané“ papírové kartičky s 3D náklonem */
+body.kid .pricing-grid{perspective:1400px;gap:clamp(22px,3vw,40px)}
+body.kid .price-card{background:#fff4d0;color:#2a1a10;border:4px solid var(--crayon);border-radius:var(--wob2);box-shadow:9px 9px 0 #35a722;transform-style:preserve-3d;transition:box-shadow .3s;backdrop-filter:none}
+body.kid .price-card::after{display:none}
+body.kid .price-card.is-3d{background:#ffe36b;box-shadow:9px 9px 0 #ff5a4e;border-color:var(--crayon);border-image:none}
+body.kid .price-card .sub,body.kid .price-card .price-note,body.kid .price-card .price span,body.kid .price-card p{color:#4a3526}
+body.kid .price-card h3{color:var(--crayon);font-size:clamp(32px,3.4vw,48px)}
+body.kid .price-card .price strong,body.kid .price-card.is-3d .price strong{background:none;-webkit-text-fill-color:#c02a1a;color:#c02a1a;font-weight:400;letter-spacing:0;text-shadow:3px 3px 0 rgba(27,18,32,.18)}
+body.kid .price-card .tag,body.kid .price-card.is-3d .tag{background:#2b7be4;color:#fff;border-radius:var(--wob);font-weight:800;text-transform:none;letter-spacing:.02em;font-size:14px}
+body.kid .price-card.is-3d .tag{background:#ff5a4e}
+body.kid .price-list li{color:#2a1a10}body.kid .price-list li::before{background-color:#8de86a;border:2px solid var(--crayon)}
+body.kid .price-card .button{box-shadow:3px 3px 0 var(--crayon)}
+body.kid .price-card.is-3d::before{content:"Nej!";position:absolute;right:-14px;top:-26px;z-index:3;width:88px;height:88px;display:grid;place-items:center;padding-top:6px;font:400 26px var(--display);color:#fff;background:#ff5a4e;clip-path:polygon(50% 0,61% 33%,96% 35%,68% 56%,79% 91%,50% 70%,21% 91%,32% 56%,4% 35%,39% 33%);transform:rotate(12deg);animation:starbob 2.4s ease-in-out infinite;filter:none}
+@keyframes starbob{0%,100%{transform:rotate(10deg) scale(1)}50%{transform:rotate(16deg) scale(1.1)}}
+body.kid .price-compare{background:var(--panel);border:3px dashed rgba(255,249,232,.7);border-radius:var(--wob2)}
+/* formuláře, kalkulačka */
+body.kid input,body.kid select,body.kid textarea{background:#fff8e1;color:var(--crayon);border:3px solid var(--crayon);border-radius:14px 18px 14px 20px/18px 14px 20px 14px;font-family:var(--sans);font-weight:600}
+body.kid input::placeholder,body.kid textarea::placeholder{color:#8a7a60}
+body.kid input[type=range]{background:transparent;border:0;accent-color:#ff5a4e}
+body.kid input[type=checkbox],body.kid input[type=radio]{accent-color:#ff5a4e}
+body.kid .branch-divider .b{stroke:var(--amber);stroke-width:5;stroke-linecap:round}
+body.kid .branch-divider .l{fill:#5fd13a;stroke:var(--crayon);stroke-width:2.5}
+body.kid .scroll-cue i{background:linear-gradient(var(--amber),transparent)}
+body.kid .site-footer{border-top:3px dashed rgba(255,249,232,.4);background:rgba(6,16,70,.7)}
+body.kid .wipe-cols i:nth-child(6n+1){background:#ffd42a}body.kid .wipe-cols i:nth-child(6n+2){background:#5fd13a}body.kid .wipe-cols i:nth-child(6n+3){background:#ff5a4e}body.kid .wipe-cols i:nth-child(6n+4){background:#2b7be4}body.kid .wipe-cols i:nth-child(6n+5){background:#ff9d2a}body.kid .wipe-cols i:nth-child(6n){background:#8a4b22}
+html.wipe-in::before{background:#12308f}
+/* hero se 3D scénou */
+.ph-3d{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:0;transition:opacity .9s ease}
+html.ph-live .ph-3d{opacity:1}
+html.ph-live .ph-zoom,html.ph-live .ph-glow,html.ph-live .ph-mist,html.ph-live .ph-fx{visibility:hidden}
+.ph-shade{background:linear-gradient(90deg,rgba(6,16,70,.72) 0%,rgba(6,16,70,.4) 30%,rgba(6,16,70,.06) 52%,transparent 62%),linear-gradient(180deg,rgba(6,16,70,.45) 0,transparent 18%)}
+body.kid .photo-hero h1{text-shadow:4px 4px 0 #0a1a5c;font-size:clamp(46px,7vw,112px)}
+body.kid .photo-hero h2{color:#fff3c9;text-shadow:2px 2px 0 #0a1a5c;font-size:clamp(24px,2.8vw,40px);font-style:normal}
+body.kid .photo-hero .hero-description,body.kid .photo-hero .hero-note{color:#fff9e8;text-shadow:2px 2px 0 rgba(10,26,92,.9)}
+.photo-hero::after{background:linear-gradient(180deg,transparent,#12308f 92%)}
+.photo-hero{background:#12308f}
+.mini3d{display:block;margin:20px auto 0;max-width:100%;height:auto}
+@media(max-width:760px){
+  .ph-shade{background:linear-gradient(0deg,rgba(14,70,24,.95) 0,rgba(14,70,24,.86) 30%,rgba(14,70,24,.42) 52%,transparent 68%),linear-gradient(180deg,rgba(6,16,70,.4) 0,transparent 14%)}
+  body.kid .photo-hero h1{font-size:clamp(40px,12vw,54px);text-shadow:3px 3px 0 #0b3a14}
+  body.kid .photo-hero h2{font-size:22px;text-shadow:2px 2px 0 #0b3a14}
+  body.kid .price-card.is-3d::before{right:-6px;top:-30px;width:76px;height:76px;font-size:22px}
+}
+@media(prefers-reduced-motion:reduce){body.kid .button:hover{animation:none}.price-card.is-3d::before{animation:none}}
+@media(max-width:760px){
+  body.kid .photo-hero h2{font-size:17px;margin-bottom:12px}
+  body.kid .photo-hero .hero-chips{flex-wrap:nowrap;gap:8px}
+  body.kid .photo-hero .chip{flex:1;flex-direction:column;gap:2px;padding:8px 10px;align-items:flex-start}
+  body.kid .photo-hero .chip strong{font-size:24px}
+  body.kid .photo-hero .hero-actions{flex-wrap:nowrap;gap:10px}
+  body.kid .photo-hero .hero-actions .button{flex:1;padding:12px 10px}
+}
+.photo-hero{min-height:calc(100svh - 76px)}
+@media(max-width:760px){.photo-hero{min-height:calc(100svh - 71px)}}
+body.kid h1 em{background:none;padding-bottom:0;text-decoration:underline wavy #ff5a4e 3px;text-underline-offset:.16em;text-decoration-skip-ink:none}
