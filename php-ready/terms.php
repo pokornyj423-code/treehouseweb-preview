@@ -17,14 +17,15 @@
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
-    <script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('js-anim');setTimeout(function(){if(!window.__fxReady)document.documentElement.classList.remove('js-anim')},4500)}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Manrope:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>(function(){var d=document.documentElement;d.setAttribute('data-nav2','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('js-anim');try{if(sessionStorage.getItem('thw-wipe')==='1')d.classList.add('wipe-in')}catch(e){}setTimeout(function(){if(!window.__fxReady){d.classList.remove('js-anim');d.classList.remove('wipe-in')}},4500)})()</script>
     <link rel="icon" type="image/svg+xml" href="assets/images/treehouseweb-mark-light.svg">
     <link rel="stylesheet" href="assets/css/site.css">
     <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
     <script src="assets/js/calculator.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="assets/js/nav.js" defer></script>
     <script src="assets/js/fx.js" defer></script>
     <script type="module" src="assets/js/scene.js"></script>
 </head>
@@ -35,8 +36,8 @@
 <a class="skip-link" href="#main">Přejít na obsah</a>
 <header class="site-header">
     <a class="brand" href="index.php?lang=cz" aria-label="Tree House Web"><img class="brand-symbol" src="assets/images/treehouseweb-mark-light.svg" alt="" width="34" height="42"><span>Tree House Web<span class="brand-dot">.</span></span></a>
-    <button class="menu-toggle icon-button" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Otevřít navigaci" title="Otevřít navigaci"><img class="icon" src="assets/icons/menu.svg" width="20" height="20" alt="" aria-hidden="true"></button>
-    <nav id="main-nav" class="main-nav" aria-label="Hlavní navigace"><a href="index.php?lang=cz#services">Služby</a><a href="index.php?lang=cz#cenik">Ceník</a><a href="references.php?lang=cz">Reference</a><a href="index.php?lang=cz#approach">Jak pracuji</a><a href="estimate.php?lang=cz">Cenová kalkulace</a></nav>
+    <button class="menu-toggle icon-button" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Otevřít navigaci" title="Otevřít navigaci"><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></button>
+    <nav id="main-nav" class="main-nav" aria-label="Hlavní navigace"><a href="sluzby.php?lang=cz" style="--i:0"><span>Služby</span></a><a href="3d-web.php?lang=cz" style="--i:1"><span>3D web</span></a><a href="index.php?lang=cz#cenik" style="--i:2"><span>Ceník</span></a><a href="references.php?lang=cz" style="--i:3"><span>Reference</span></a><a href="jak-pracujeme.php?lang=cz" style="--i:4"><span>Jak pracujeme</span></a><a href="estimate.php?lang=cz" style="--i:5"><span>Kalkulace</span></a><div class="menu-foot"><a class="button primary" href="index.php?lang=cz#contact" style="--i:6">Pojďme si napsat</a><a class="menu-mail" href="mailto:info@treehouseweb.com" style="--i:7">info@treehouseweb.com</a><div class="language-switch" role="group" aria-label="Language" style="--i:8"><a href="?lang=cz" lang="cs" hreflang="cs" title="Čeština" aria-current="true">CZ</a><a href="?lang=en" lang="en" hreflang="en" title="English">EN</a><a href="?lang=de" lang="de" hreflang="de" title="Deutsch">DE</a><a href="?lang=es" lang="es" hreflang="es" title="Español">ES</a></div></div></nav>
     <div class="header-end">
         <nav class="language-switch" aria-label="Language"><a href="?lang=cz" lang="cs" hreflang="cs" title="Čeština" aria-current="true">CZ</a><a href="?lang=en" lang="en" hreflang="en" title="English">EN</a><a href="?lang=de" lang="de" hreflang="de" title="Deutsch">DE</a><a href="?lang=es" lang="es" hreflang="es" title="Español">ES</a></nav>
         <a class="header-contact" href="index.php?lang=cz#contact">Pojďme si napsat <img class="icon" src="assets/icons/arrow-up-right.svg" width="18" height="18" alt="" aria-hidden="true"></a>
@@ -59,6 +60,6 @@
         <p class="legal-updated mono">Aktualizováno 6. listopadu 2026</p>
 </div>
 </main>
-<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="brand" href="index.php?lang=cz"><img class="brand-symbol" src="assets/images/treehouseweb-mark-light.svg" alt="" width="34" height="42"><span>Tree House Web<span class="brand-dot">.</span></span></a><p>Nezávisle. Promyšleně. Poctivě.</p><a class="text-link" href="index.php?lang=cz#top">Zpět nahoru<img class="icon" src="assets/icons/arrow-up-right.svg" width="18" height="18" alt="" aria-hidden="true"></a></div><nav class="footer-legal" aria-label="Legal information"><a href="privacy.php?lang=cz">Soukromí</a><a href="legal-notice.php?lang=cz">Identifikace provozovatele</a><a href="terms.php?lang=cz">Podmínky spolupráce</a><a href="admin.php?lang=cz">Správa studia ↗</a></nav><div class="footer-bottom mono"><span>© 2026 TreeHouseWeb. Webové řemeslo a modernizace starších systémů.</span></div></div></footer>
+<footer class="site-footer"><div class="wrap"><div class="footer-top"><a class="brand" href="index.php?lang=cz"><img class="brand-symbol" src="assets/images/treehouseweb-mark-light.svg" alt="" width="34" height="42"><span>Tree House Web<span class="brand-dot">.</span></span></a><p>Nezávisle. Promyšleně. Poctivě.</p><a class="text-link" href="index.php?lang=cz#top">Zpět nahoru<img class="icon" src="assets/icons/arrow-up-right.svg" width="18" height="18" alt="" aria-hidden="true"></a></div><nav class="footer-legal" aria-label="Stránky"><a href="sluzby.php?lang=cz">Služby</a><a href="normalni-web.php?lang=cz">Normální web</a><a href="3d-web.php?lang=cz">3D web</a><a href="jak-pracujeme.php?lang=cz">Jak pracujeme</a><a href="references.php?lang=cz">Reference</a></nav><nav class="footer-legal" aria-label="Legal information"><a href="privacy.php?lang=cz">Soukromí</a><a href="legal-notice.php?lang=cz">Identifikace provozovatele</a><a href="terms.php?lang=cz">Podmínky spolupráce</a><a href="admin.php?lang=cz">Správa studia ↗</a></nav><div class="footer-bottom mono"><span>© 2026 TreeHouseWeb. Webové řemeslo a modernizace starších systémů.</span></div></div></footer>
 </body>
 </html>

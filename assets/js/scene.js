@@ -7,7 +7,7 @@ import * as THREE from 'three';
 const root = document.documentElement;
 const canvas = document.getElementById('scene');
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const isMobile = window.matchMedia('(max-width: 760px)').matches || /Android|iPhone|iPad/i.test(navigator.userAgent);
+const isMobile = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches || /Android|iPhone|iPad/i.test(navigator.userAgent);
 const lowPower = (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
   (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) ||
   (navigator.connection && navigator.connection.saveData);
@@ -22,7 +22,7 @@ else { try { start(); } catch (e) { console.warn('3D scéna se nespustila:', e);
 function start() {
   const { MathUtils: MU } = THREE;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !isMobile, alpha: false, powerPreference: 'high-performance' });
-  let dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 1.75);
+  let dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.75);
   renderer.setPixelRatio(dpr);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
@@ -66,7 +66,7 @@ function start() {
   })();
 
   // hvězdy
-  const starN = 380, sp = new Float32Array(starN * 3);
+  const starN = isMobile ? 160 : 380, sp = new Float32Array(starN * 3);
   for (let i = 0; i < starN; i++) {
     const a = rnd() * Math.PI * 2, e = Math.asin(0.12 + rnd() * 0.88), r = 105;
     sp[i * 3] = Math.cos(a) * Math.cos(e) * r; sp[i * 3 + 1] = Math.sin(e) * r; sp[i * 3 + 2] = Math.sin(a) * Math.cos(e) * r;
@@ -256,7 +256,7 @@ function start() {
     };
   }
   {
-    const N = isMobile ? 300 : 520;
+    const N = isMobile ? 210 : 520;
     const mat = new THREE.MeshStandardMaterial({ roughness: 0.85, flatShading: true }); wind(mat, 0.07);
     const mesh = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 1), mat, N);
     const d = new THREE.Object3D(), col = new THREE.Color();
@@ -277,13 +277,13 @@ function start() {
     scene.add(mesh);
     // tráva
     const gm = new THREE.MeshStandardMaterial({ color: 0x4f9a55, roughness: 1, flatShading: true }); wind(gm, 0.05);
-    const gN = isMobile ? 140 : 260, grass = new THREE.InstancedMesh(new THREE.ConeGeometry(0.07, 0.55, 3), gm, gN);
+    const gN = isMobile ? 70 : 260, grass = new THREE.InstancedMesh(new THREE.ConeGeometry(0.07, 0.55, 3), gm, gN);
     for (let i = 0; i < gN; i++) { const a = rnd() * 6.28, dd = 0.9 + rnd() * 9; d.position.set(Math.cos(a) * dd, 0.22, Math.sin(a) * dd); d.rotation.set((rnd() - .5) * .4, rnd() * 3, (rnd() - .5) * .4); d.scale.setScalar(0.6 + rnd() * 0.9); d.updateMatrix(); grass.setMatrixAt(i, d.matrix); grass.setColorAt(i, col.set(pick(['#4f9a55', '#3c8048', '#6cb060']))); }
     scene.add(grass);
   }
 
   /* ---------- padající listy ---------- */
-  const leafN = isMobile ? 16 : 34;
+  const leafN = isMobile ? 12 : 34;
   const leaves = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.2, 0.13), new THREE.MeshStandardMaterial({ side: THREE.DoubleSide, roughness: 0.9 }), leafN);
   const leafData = [];
   { const col = new THREE.Color();
@@ -303,7 +303,7 @@ function start() {
   }
 
   /* ---------- světlušky ---------- */
-  const ffN = isMobile ? 70 : 140;
+  const ffN = isMobile ? 48 : 140;
   const ffGeo = new THREE.BufferGeometry(); const ffp = new Float32Array(ffN * 3), ffs = new Float32Array(ffN);
   for (let i = 0; i < ffN; i++) { const a = rnd() * 6.28, d = 0.8 + Math.pow(rnd(), 0.7) * 7; ffp[i * 3] = Math.cos(a) * d; ffp[i * 3 + 1] = 0.3 + rnd() * 6.5; ffp[i * 3 + 2] = Math.sin(a) * d; ffs[i] = 0.5 + rnd(); }
   ffGeo.setAttribute('position', new THREE.BufferAttribute(ffp, 3)); ffGeo.setAttribute('seed', new THREE.BufferAttribute(ffs, 1));
@@ -334,11 +334,20 @@ function start() {
   }
   resize(); window.addEventListener('resize', resize, { passive: true });
 
-  let target = 0, prog = 0, mx = 0, my = 0, smx = 0, smy = 0, override = null;
+  let target = 0, prog = (() => { try { return Math.min(1, Math.max(0, Number(sessionStorage.getItem('thw-prog')) || 0)); } catch (e) { return 0; } })(), mx = 0, my = 0, smx = 0, smy = 0, override = null;
   const readScroll = () => { const m = document.documentElement.scrollHeight - window.innerHeight; target = m > 0 ? MU.clamp(window.scrollY / m, 0, 1) : 0; };
   readScroll(); window.addEventListener('scroll', readScroll, { passive: true });
   if (!reduce) window.addEventListener('pointermove', (e) => { mx = (e.clientX / W_ - 0.5) * 2; my = (e.clientY / H_ - 0.5) * 2; }, { passive: true });
-  window.__setScenePrg = (p) => { override = p; if (reduce) frame(0, true); };
+  window.__setScenePrg = (p) => { override = p; if (reduce) frame(performance.now(), true); };
+  // dotyk: natočení telefonu a tažení prstem nahrazují myš
+  if (!reduce) {
+    window.addEventListener('deviceorientation', (e) => {
+      if (e.gamma == null || e.beta == null) return;
+      mx = MU.clamp(e.gamma / 28, -1, 1); my = MU.clamp((e.beta - 55) / 28, -1, 1);
+    }, { passive: true });
+  }
+  const saveProg = () => { try { sessionStorage.setItem('thw-prog', String(prog)); } catch (e) {} };
+  window.addEventListener('pagehide', saveProg); document.addEventListener('visibilitychange', () => { if (document.hidden) saveProg(); });
 
   const tmpP = new THREE.Vector3(), tmpT = new THREE.Vector3(), cR = new THREE.Vector3(), tmpCol = new THREE.Color();
   function applyState(p, time, still) {
@@ -379,7 +388,7 @@ function start() {
     const dt = Math.min((now - last) / 1000, 0.1); last = now;
     if (!reduce) time += dt;
     uniforms.uTime.value = reduce ? 3 : time;
-    prog += ((override != null ? override : target) - prog) * (reduce ? 1 : 1 - Math.exp(-dt * 4));
+    prog += ((override != null ? override : target) - prog) * (reduce ? 1 : 1 - Math.exp(-dt * 3.2));
     applyState(prog, time, reduce);
     camera_(prog, time);
     if (!reduce) {
@@ -391,7 +400,7 @@ function start() {
     renderer.render(scene, camera); frame.drawn = true;
     // adaptivní rozlišení: při pomalém vykreslování sníží pixel ratio
     if (!reduce && dt > 0.026) slow++; else slow = Math.max(0, slow - 0.2);
-    if (slow > 40 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); slow = 0; }
+    if (slow > 30 && dpr > (isMobile ? 0.85 : 1)) { dpr = Math.max(isMobile ? 0.85 : 1, dpr - 0.2); renderer.setPixelRatio(dpr); resize(); slow = 0; }
   }
   if (reduce) {
     // jeden statický snímek, překreslení jen při změně velikosti

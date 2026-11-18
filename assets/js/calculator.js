@@ -205,7 +205,7 @@ if (comparison) {
 }
 
 const menuButton = document.querySelector('.menu-toggle');
-if (menuButton) {
+if (menuButton && !document.documentElement.hasAttribute('data-nav2')) {
     const navigation = document.querySelector('#main-nav');
     menuButton.addEventListener('click', () => {
         const expanded = menuButton.getAttribute('aria-expanded') !== 'true';
