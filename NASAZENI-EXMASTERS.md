@@ -103,3 +103,6 @@ Redesign je zatím **jen česky** (nové texty ceníku, hero, štítky). Přepí
 
 ## Hero: strom s týpkem a bublinou
 `index.php` obsahuje `<div class="thought" id="thought">` hned za `<body>` (bublina; bez WebGL se zobrazí u záložního obrázku stromu). Skript `assets/js/scene.js` ji kotví na okno domku. Žádná PHP logika se nemění; kontaktní formulář, `data-pricing`, jazyky a ceny zůstávají (v `admin.php` na serveru musí být 9 999 / 15 999 Kč).
+
+## Zoom na týpka u počítače (scroll)
+`index.php` má za hero `<div class="zoom-spacer" id="zoom-spacer">` (150 vh, uvnitř CTA „Zjistit cenu webu“). Při scrollu přes něj `assets/js/scene.js` plynule přiblíží kameru k oknu domku, bublina se změní na „Aha! Už vím.“ a obrazovka monitoru (CanvasTexture, Fraunces + Manrope po `document.fonts.ready`) přepne z „Jak na web…?“ na „Tree House Web ti se vším pomůže“. Pak stránka normálně pokračuje. Při `prefers-reduced-motion` se spacer skryje a zobrazí se statický záběr. Žádná PHP logika se nemění.

@@ -171,6 +171,31 @@ function start() {
   branch([-1.2, 3.0, 0.5], [-1.7, 3.9, 0.9], 0.07, 0.04);
 
   /* ---------- domek ---------- */
+  /* ---------- obrazovka monitoru (CanvasTexture): problém → Tree House Web pomůže ---------- */
+  const screenCv = document.createElement('canvas'); screenCv.width = 512; screenCv.height = 364; let screenTex = null, screenState = -1;
+  function drawScreen(st) {
+    const c = screenCv.getContext('2d'), w = 512, h = 364; screenState = st;
+    const FD = '"Fraunces", Georgia, serif', FS = '"Manrope", system-ui, sans-serif';
+    c.clearRect(0, 0, w, h);
+    if (st === 0) {
+      const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#1b2a4a'); g.addColorStop(1, '#0d1626'); c.fillStyle = g; c.fillRect(0, 0, w, h);
+      c.fillStyle = '#ff7a59'; c.font = '600 150px ' + FD; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('?', w / 2, 130);
+      c.fillStyle = '#e8eefc'; c.font = '700 40px ' + FS; c.fillText('Jak na web…?', w / 2, 250);
+      c.fillStyle = 'rgba(232,238,252,.55)'; c.font = '600 26px ' + FS; c.fillText('Nic nenalezeno', w / 2, 304);
+    } else {
+      const g = c.createLinearGradient(0, 0, w, h); g.addColorStop(0, '#12392b'); g.addColorStop(1, '#2a2a14'); c.fillStyle = g; c.fillRect(0, 0, w, h);
+      const r = c.createRadialGradient(w / 2, 150, 10, w / 2, 150, 300); r.addColorStop(0, 'rgba(255,196,110,.38)'); r.addColorStop(1, 'rgba(255,196,110,0)'); c.fillStyle = r; c.fillRect(0, 0, w, h);
+      // mini logo: strom s domkem
+      c.save(); c.translate(w / 2, 86); c.fillStyle = '#86d6a2'; c.beginPath(); c.arc(0, -8, 38, 0, 7); c.fill(); c.fillStyle = '#8a5a35'; c.fillRect(-7, 20, 14, 34);
+      c.fillStyle = '#ffb454'; c.fillRect(-14, -18, 28, 20); c.beginPath(); c.moveTo(-19, -18); c.lineTo(0, -34); c.lineTo(19, -18); c.fill(); c.fillStyle = '#12392b'; c.fillRect(-4, -12, 8, 8); c.restore();
+      c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#fff4dc'; c.font = '600 62px ' + FD; c.fillText('Tree House Web', w / 2, 188);
+      c.fillStyle = '#ffc56e'; c.font = '800 44px ' + FS; c.fillText('ti se vším pomůže', w / 2, 258);
+      c.strokeStyle = '#ffc56e'; c.lineWidth = 4; c.lineCap = 'round'; c.beginPath(); c.moveTo(150, 296); c.quadraticCurveTo(w / 2, 312, 362, 294); c.stroke();
+    }
+    if (screenTex) screenTex.needsUpdate = true;
+  }
+  drawScreen(0);
+  if (document.fonts && document.fonts.load) Promise.all([document.fonts.load('600 62px "Fraunces"'), document.fonts.load('800 44px "Manrope"'), document.fonts.load('700 40px "Manrope"')]).then(() => document.fonts.ready).then(() => drawScreen(Math.max(screenState, 0))).catch(() => {});
   const house = new THREE.Group(); house.position.set(1.65, 3.38, 0.3); house.rotation.y = 0.35; house.scale.setScalar(1.45); tree.add(house);
   {
     const plat = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.5, 0.16, 10), woodMat); plat.position.y = -0.08; house.add(plat);
@@ -195,9 +220,11 @@ function start() {
       const head = new THREE.Mesh(new THREE.IcosahedronGeometry(0.075, 0), m(0xf0c29a)); head.position.set(0, 0.32, 0); head.rotation.z = 0.2; g.add(head);
       const hair = new THREE.Mesh(new THREE.IcosahedronGeometry(0.08, 0), m(0x3a2415)); hair.scale.set(1, 0.6, 1); hair.position.set(0, 0.37, -0.005); g.add(hair);
       const arm = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.05, 0.16), m(0x3f6fd6)); arm.position.set(-0.08, 0.15, 0.1); g.add(arm);
-      const desk = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.03, 0.14), woodMat); desk.position.set(-0.1, 0.1, 0.06); g.add(desk);
-      const mon = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.15, 0.025), m(0x2a3140)); mon.position.set(-0.2, 0.2, 0.05); g.add(mon);
-      const scr = new THREE.Mesh(new THREE.PlaneGeometry(0.17, 0.12), new THREE.MeshBasicMaterial({ color: 0x8fd3ff, toneMapped: false })); scr.position.set(-0.2, 0.2, 0.064); g.add(scr);
+      const desk = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.03, 0.16), woodMat); desk.position.set(-0.13, 0.1, 0.06); g.add(desk);
+      const mon = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.23, 0.025), m(0x2a3140)); mon.position.set(-0.22, 0.23, 0.05); g.add(mon);
+      const stand = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.06, 0.03), m(0x2a3140)); stand.position.set(-0.22, 0.13, 0.05); g.add(stand);
+      screenTex = new THREE.CanvasTexture(screenCv); screenTex.colorSpace = THREE.SRGBColorSpace; screenTex.anisotropy = 4;
+      const scr = new THREE.Mesh(new THREE.PlaneGeometry(0.26, 0.185), new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false })); scr.position.set(-0.22, 0.23, 0.064); g.add(scr);
       const lamp = new THREE.PointLight(0xffc878, 0.9, 2.2, 2); lamp.position.set(0.1, 0.8, 1.05); house.add(lamp); house.userData.manLight = lamp; }
     // zábradlí
     for (let i = 0; i < 12; i++) {
@@ -217,6 +244,7 @@ function start() {
 
   /* ---------- světelné řetězy ---------- */
   const bulbPos = [];
+  const lightObjs = [];
   {
     const strands = [
       [W(-1.0, 1.12, 0.78), W(-0.1, 0.85, 0.95), W(1.0, 1.12, 0.78)],
@@ -229,7 +257,7 @@ function start() {
     strands.forEach((pts) => {
       const curve = new THREE.CatmullRomCurve3(pts); const n = 14;
       for (let i = 0; i <= n; i++) { const p = curve.getPoint(i / n); p.y -= Math.sin((i / n) * Math.PI) * 0.18; bulbPos.push(p); }
-      const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 28, 0.008, 3, false), darkWood); scene.add(tube);
+      const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 28, 0.008, 3, false), darkWood); scene.add(tube); lightObjs.push(tube);
     });
   }
   const bulbs = new THREE.InstancedMesh(new THREE.SphereGeometry(0.04, 8, 6), bulbMat, bulbPos.length);
@@ -352,8 +380,27 @@ function start() {
   readScroll(); window.addEventListener('scroll', readScroll, { passive: true });
   if (!reduce) window.addEventListener('pointermove', (e) => { mx = (e.clientX / W_ - 0.5) * 2; my = (e.clientY / H_ - 0.5) * 2; }, { passive: true });
   let zoomTarget = 0, zoomT = 0;
-  const zCam = W(-0.45, 0.72, 1.75), zTgt = W(-0.55, 0.66, 0.59);
-  window.__zoomWindow = (on) => { zoomTarget = (on && !reduce) ? 1 : 0; };
+  // cíl kamery v souřadnicích domku: monitor + týpek (na mobilu dál a středem na obě postavy)
+  const zCam = new THREE.Vector3(), zTgt = new THREE.Vector3();
+  function setZoomGoal() {
+    if (W_ < 761 || camera.aspect < 1) { zCam.copy(W(-0.005, 0.74, 2.5)); zTgt.copy(W(-0.005, 0.7, 0.7)); }
+    else { zCam.copy(W(-0.01, 0.72, 1.95)); zTgt.copy(W(-0.01, 0.7, 0.7)); }
+  }
+  const spacerEl = document.getElementById('zoom-spacer');
+  const thoughtEl = document.getElementById('thought'), thoughtTxt = thoughtEl && thoughtEl.querySelector('.thought-txt');
+  function readZoom() {
+    if (!spacerEl || reduce) { zoomTarget = 0; return; }
+    const top = spacerEl.getBoundingClientRect().top + window.scrollY, zEnd = top + spacerEl.offsetHeight - H_, y = window.scrollY;
+    const up = MU.clamp(y / Math.max(1, zEnd), 0, 1), down = MU.clamp((y - zEnd) / (H_ * 0.8), 0, 1);
+    zoomTarget = up * (1 - down * down * (3 - 2 * down));
+    root.style.setProperty('--zp', zoomTarget.toFixed(3));
+    root.classList.toggle('zoom-end', zoomTarget > 0.85);
+    if (screenState !== (zoomTarget > 0.5 ? 1 : 0)) drawScreen(zoomTarget > 0.5 ? 1 : 0);
+    if (thoughtTxt) { const t = zoomTarget > 0.5 ? 'Aha! Už vím.' : 'Jak se dělá web…?'; if (thoughtTxt.textContent !== t) thoughtTxt.textContent = t; }
+  }
+  setZoomGoal(); readZoom(); window.addEventListener('scroll', readZoom, { passive: true }); window.addEventListener('resize', () => { setZoomGoal(); readZoom(); }, { passive: true });
+  if (reduce) { drawScreen(1); }
+  
   window.__setScenePrg = (p) => { override = p; if (reduce) frame(performance.now(), true); };
   // dotyk: natočení telefonu a tažení prstem nahrazují myš
   if (!reduce) {
@@ -387,7 +434,7 @@ function start() {
   function camera_(p, time) {
     const s = camCurve.getPoint(p), tg = tgtCurve.getPoint(p);
     smx += (mx - smx) * 0.05; smy += (my - smy) * 0.05;
-    const ze = zoomT * zoomT * (3 - 2 * zoomT);
+    const ze = reduce ? 0.6 : zoomT * zoomT * (3 - 2 * zoomT);
     tmpP.copy(s).lerp(zCam, ze); tmpT.copy(tg).lerp(zTgt, ze);
     const baseFov = camera.aspect < 1 ? 62 : 42, wantFov = MU.lerp(baseFov, camera.aspect < 1 ? 48 : 30, ze);
     if (Math.abs(camera.fov - wantFov) > 0.01) { camera.fov = wantFov; camera.updateProjectionMatrix(); }
@@ -395,7 +442,7 @@ function start() {
     const pk = 1 - ze * 0.85; tmpP.addScaledVector(cR, smx * 0.7 * pk); tmpP.y += (-smy * 0.35 + Math.sin(time * 0.25) * (reduce ? 0 : 0.08)) * pk;
     camera.position.copy(tmpP); camera.lookAt(tmpT);
     // posun scény doprava na úvodu (text vlevo), na mobilu níž
-    const hf = (1 - MU.smoothstep(p, 0.0, 0.12)) * (1 - ze);
+    const hf = (1 - MU.smoothstep(p, 0.0, 0.12)) * (reduce ? 1 : 1 - ze);
     if (W_ > 1000) camera.setViewOffset(W_, H_, -W_ * 0.19 * hf, 0, W_, H_);
     else if (W_ <= 760) camera.setViewOffset(W_, H_, 0, H_ * 0.33 * hf, W_, H_);
     else camera.clearViewOffset();
@@ -405,13 +452,13 @@ function start() {
   /* ---------- myšlenková bublina ukotvená na okno (HTML overlay, projekce každý snímek) ---------- */
   const thought = document.getElementById('thought');
   const hintPos = new THREE.Vector3(0.12, 1.05, 0.64);
-  const heroVisible = () => window.scrollY < window.innerHeight * 0.8 && !!document.getElementById('hero-title');
+  const heroVisible = () => (window.scrollY < window.innerHeight * 0.8 || (!!document.getElementById('zoom-spacer') && zoomTarget > 0.02)) && !!document.getElementById('hero-title');
   function updateHint() {
     if (!thought) return;
-    const show = heroVisible();
+    const show = heroVisible() && (reduce || zoomT < 0.97);
     thought.classList.toggle('on', show);
     if (!show) return;
-    hintPos.set(0.12, 0.98, 0.7); house.localToWorld(hintPos); hintPos.project(camera);
+    hintPos.set(0.12, 0.92, 0.7); house.localToWorld(hintPos); hintPos.project(camera);
     const x = (hintPos.x * 0.5 + 0.5) * W_, y = (-hintPos.y * 0.5 + 0.5) * H_;
     thought.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
   }
@@ -424,10 +471,11 @@ function start() {
     const dt = Math.min((now - last) / 1000, 0.1); last = now;
     if (!reduce) time += dt;
     uniforms.uTime.value = reduce ? 3 : time;
-    zoomT += (zoomTarget - zoomT) * (reduce ? 1 : 1 - Math.exp(-dt * 2.4));
-    const want = zoomTarget ? 0.62 : (override != null ? override : target);
+    zoomT = reduce ? 0.62 : zoomT + (zoomTarget - zoomT) * (1 - Math.exp(-dt * 5));
+    const want = MU.lerp(override != null ? override : target, 0.62, zoomT);
     prog += (want - prog) * (reduce ? 1 : 1 - Math.exp(-dt * 3.2));
     applyState(prog, time, reduce);
+    { const zv = reduce ? 0.6 : zoomT * zoomT * (3 - 2 * zoomT), vis = zv < 0.3; if (bulbs.visible !== vis) { bulbs.visible = glowPts.visible = winGlow.visible = vis; lightObjs.forEach((o) => { o.visible = vis; }); } }
     camera_(prog, time);
     { const pulse = reduce ? 1 : 1 + 0.16 * Math.sin(time * 2.4);
       winMat.color.multiplyScalar(pulse); winGlow.material.opacity *= pulse; }
