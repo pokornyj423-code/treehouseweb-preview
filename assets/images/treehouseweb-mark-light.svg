@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 230" role="img" aria-labelledby="mark-title">
+  <title id="mark-title">Tree House Web treehouse mark</title>
+  <g transform="translate(20 12)" fill="none" stroke="#8fd9a8" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M23 77C8 69 11 47 28 41C24 19 52 5 69 18C86 0 113 12 114 32C136 26 154 45 148 64C168 79 151 103 131 100" fill="#1d3b2c" stroke="none"/>
+    <path d="M73 135H86V151L105 135H113L86 161V197H73V176L38 135H46L73 165Z" fill="#8fd9a8" stroke="none"/>
+    <path d="M27 88L79 48L130 88M38 81V133H120V81M29 135H132M59 197H101"/>
+    <path d="M63 131V104H88V131M101 99H110V113H101Z" stroke-width="2.5"/>
+    <g stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M79 52L62 73M79 52L69 79M79 52V82M79 52L89 79M79 52L96 73"/>
+      <path d="M73 59Q76 63 79 62Q82 63 85 59M68 65Q71 71 75 71Q79 75 83 71Q87 71 90 65M62 73Q65 79 69 79Q74 84 79 82Q84 84 89 79Q93 79 96 73"/>
+    </g>
+    <path d="M112 135L104 197M126 135L118 197M110.5 147H124.5M108.8 160H122.8M107.1 173H121.1M105.4 186H119.4" transform="translate(0 332) scale(1 -1)" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+</svg>

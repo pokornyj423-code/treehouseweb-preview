@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 74" role="img" aria-labelledby="bike-title">
+  <title id="bike-title">Modern bicycle emblem</title>
+  <g fill="none" stroke="#f6f7f8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="25" cy="50" r="18" stroke-width="3"/>
+    <circle cx="95" cy="50" r="18" stroke-width="3"/>
+    <path d="M25 50L43 22L60 50H25L52 50L71 22L95 50L60 50M43 22H60M71 22H82M39 18H52M79 18L84 22M84 22L89 18" stroke-width="3"/>
+    <path d="M44 21L52 13M72 21L78 15" stroke="#c24e23" stroke-width="4"/>
+  </g>
+  <circle cx="25" cy="50" r="3" fill="#c24e23"/>
+  <circle cx="95" cy="50" r="3" fill="#c24e23"/>
+</svg>
