@@ -9,9 +9,23 @@
 | --- | --- | --- |
 | Náhled (statické HTML) | kořen repa: `index.html`, `estimate.html`, `references.html`, `privacy.html`, `legal-notice.html`, `terms.html`, `admin.html` | Běží na GitHub Pages bez PHP. Kalkulačka počítá v JS, odeslání formuláře se v náhledu jen zdvořile omluví (není tam `contact.php`). |
 | **Šablony pro PHP hosting** | `php-ready/*.php` | Totéž, ale se **stejnými názvy souborů, odkazy (`…php?lang=cz`), formuláři, názvy polí (`name`/`id`), `action="contact.php"` a `data-pricing` / `data-translations`** jako původní web. |
-| Nové styly a skripty | `assets/css/site.css`, `assets/js/fx.js`, `assets/js/scene.js`, `assets/js/calculator.js`, `assets/images/treehouseweb-mark-light.svg` | `site.css` je **nový** soubor, nepřepisuje `style.css` ani `brand-overrides.css`. `calculator.js` je původní skript s drobnými úpravami (viz níže). |
+| Nové styly a skripty | `assets/css/site.css`, `assets/js/fx.js`, `assets/js/nav.js`, `assets/js/scene.js`, `assets/js/calculator.js`, `assets/images/treehouseweb-mark-light.svg` | `site.css` je **nový** soubor, nepřepisuje `style.css` ani `brand-overrides.css`. `calculator.js` je původní skript s drobnými úpravami (viz níže). |
 
-Načítá se z CDN (jsdelivr): Three.js 0.160, GSAP 3.12.5 a ScrollTrigger; fonty z Google Fonts (jako dosud). Žádný build.
+Načítá se z CDN (jsdelivr): Three.js 0.160, GSAP 3.12.5 a ScrollTrigger; fonty z Google Fonts (**Fraunces** display, **Manrope** text, **JetBrains Mono** štítky; latin-ext, `display=swap`, `preconnect`). Žádný build.
+
+### Nové podstránky (kolo 2)
+
+| Náhled | PHP hosting | Obsah |
+| --- | --- | --- |
+| `sluzby.html` | `php-ready/sluzby.php` | Tři služby z původního webu (Nový web / Starý kód, nový začátek / Na míru a správa), odkazy na balíčky |
+| `normalni-web.html` | `php-ready/normalni-web.php` | Balíček 9 999 Kč: co obsahuje, co se počítá zvlášť (příplatky z kalkulačky) |
+| `3d-web.html` | `php-ready/3d-web.php` | Balíček 15 999 Kč: co obsahuje, živá ukázka (přepínač času dne ovládá 3D scénu), srovnání s Normálním webem |
+| `jak-pracujeme.html` | `php-ready/jak-pracujeme.php` | Tři kroky spolupráce z původního webu + principy |
+
+Tyto čtyři stránky jsou **nové, bez serverového kódu** (čistá česká statika). Stačí je nahrát vedle ostatních; nic v PHP je nevyžaduje. Odkazy v hlavní navigaci a patičce všech šablon na ně míří (`sluzby.php?lang=cz` apod.), proto nové šablony nasazujte všechny najednou. Do EN/DE/ES verzí se nové stránky nepřekládaly.
+
+Mobilní navigace je celoobrazovkové menu (`nav.js`): `aria-expanded`, focus trap, Esc, zamknutí scrollu. V `calculator.js` je původní kód mobilního menu zachován, ale vypíná se, je-li na `<html>` atribut `data-nav2` (nastavuje ho nová hlavička), takže původní šablony ostatních jazyků fungují dál.
+Přechody mezi stránkami (wipe) a vlastní kurzor jsou v `fx.js` a při `prefers-reduced-motion` se vypínají.
 
 ## 2. Které části původního webu jsou PHP (serverový kód nemáme)
 
@@ -33,9 +47,9 @@ Ceník kalkulačky (viz bod 4) a jazyky (bod 5) jsou jediná místa, kde je pot�
 
 1. **Záloha** celého původního webu (bod 6) a stažení jeho PHP souborů lokálně, protože v nich jsou kusy kódu, které `php-ready` obsahuje jen jako zástupné značky.
 2. **Zkopírujte nové assety** do `assets/` na serveru (jen **přidat**, nic nemazat):
-   `assets/css/site.css`, `assets/js/fx.js`, `assets/js/scene.js`, `assets/images/treehouseweb-mark-light.svg`.
+   `assets/css/site.css`, `assets/js/fx.js`, `assets/js/nav.js`, `assets/js/scene.js`, `assets/images/treehouseweb-mark-light.svg`.
 3. **Nahraďte** `assets/js/calculator.js` verzí z repa. Je to původní skript; změny jsou jen tyto (zpětně kompatibilní): zpracování odpovědi, která není JSON, ruční vyplnění zprávy z ceníkových tlačítek (`data-prefill`) a obsluha `[data-intent]` i na stránkách bez kalkulačky. Slevové kódy a odeslání formuláře volají dál `contact.php` stejně jako dřív, admin (řádky slevových kódů, mobilní menu, posuvník na referencích) funguje beze změny.
-4. **Šablony stránek** `index.php`, `estimate.php`, `references.php`, `privacy.php`, `legal-notice.php`, `terms.php`: vezměte soubory z `php-ready/` a v nich **nahraďte zástupné značky původním PHP kódem** z původních souborů:
+4. **Šablony stránek** `index.php`, `estimate.php`, `references.php`, `privacy.php`, `legal-notice.php`, `terms.php` a nové `sluzby.php`, `normalni-web.php`, `3d-web.php`, `jak-pracujeme.php`: vezměte soubory z `php-ready/` a v nich **nahraďte zástupné značky původním PHP kódem** z původních souborů:
    - `__CSRF__` (skryté pole `csrf` a `data-csrf` u kalkulačky) → původní výraz pro CSRF token,
    - `__FORM_TOKEN__` (skryté pole `form_token`) → původní výraz pro form token,
    - hodnota skrytého pole `lang` zůstává `cz`; u více jazyků ji nahraďte původním výrazem,
