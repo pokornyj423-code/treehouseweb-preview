@@ -100,3 +100,6 @@ Redesign je zatím **jen česky** (nové texty ceníku, hero, štítky). Přepí
 - Právní stránky obsahují původní texty a upozornění „NENASTAVENO“, protože údaje se doplňují v prostředí hostingu. Stránka `terms` byla upravena jen v cenách (1 000 Kč → 9 999 / 15 999 Kč); text by měl zkontrolovat Jakub.
 - Ostatní jazyky viz bod 4.
 - Náhled je označen `noindex`, ostrá verze (`php-ready`) má původní `canonical` a `hreflang` (bez `noindex`).
+
+## Klikací okna domku (hero)
+Okna domku v 3D scéně na úvodní stránce jsou klikací (raycast v `assets/js/scene.js`, popisek „Klikněte do okna“) a spouštějí scénu „Světlo v okně“ (`assets/js/story.js`). Pro klávesnici je v hero skryté tlačítko „Podívat se do okna domku“ (`.sr-focus`). Při nasazení do `index.php` stačí zkopírovat `assets/` a hero z `php-ready/index.php`; žádná PHP logika se nemění.

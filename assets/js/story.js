@@ -57,5 +57,6 @@
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
+  window.__openWindowStory = function () { open(document.activeElement); };
   setStep(1);
 })();

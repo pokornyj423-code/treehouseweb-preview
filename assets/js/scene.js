@@ -177,12 +177,15 @@ function start() {
     const cab = new THREE.Mesh(new THREE.BoxGeometry(1.7, 1.15, 1.35), woodMat); cab.position.set(0.05, 0.575, -0.1); house.add(cab);
     const roof = new THREE.Mesh(new THREE.ConeGeometry(1.58, 0.95, 4), roofMat); roof.rotation.y = Math.PI / 4; roof.scale.set(1.0, 1, 0.86); roof.position.set(0.05, 1.62, -0.1); house.add(roof);
     const chim = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.5, 0.2), stoneMat); chim.position.set(0.5, 1.9, -0.25); house.add(chim);
-    const wins = [];
+    const wins = []; const hitMeshes = [];
     const addWin = (x, y, z, ry) => {
       const w = new THREE.Mesh(new THREE.PlaneGeometry(0.3, 0.32), winMat); w.position.set(x, y, z); w.rotation.y = ry; house.add(w);
       const f = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.38, 0.03), darkWood); f.position.set(x, y, z - 0.012 * Math.cos(ry)); f.rotation.y = ry; house.add(f);
       const bar = new THREE.Mesh(new THREE.BoxGeometry(0.31, 0.03, 0.02), darkWood); bar.position.set(x, y, z + 0.012 * Math.cos(ry)); bar.rotation.y = ry; house.add(bar);
       wins.push(new THREE.Vector3(x, y, z));
+      const hit = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.66), new THREE.MeshBasicMaterial({ visible: false, side: THREE.DoubleSide }));
+      if (isMobile) hit.scale.setScalar(2.3);
+      hit.position.set(x, y, z + 0.03 * Math.cos(ry)); hit.rotation.y = ry; hit.userData.isWin = true; house.add(hit); hitMeshes.push(hit);
     };
     addWin(-0.55, 0.65, 0.59, 0); addWin(0.65, 0.65, 0.59, 0); addWin(0.91, 0.65, -0.1, Math.PI / 2); addWin(-0.81, 0.65, -0.1, -Math.PI / 2);
     const door = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.7, 0.04), darkWood); door.position.set(0.05, 0.35, 0.59); house.add(door);
@@ -196,7 +199,7 @@ function start() {
     const flag = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.22), new THREE.MeshStandardMaterial({ color: 0xef7a4e, side: THREE.DoubleSide, roughness: 0.8 }));
     const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.7, 4), darkWood); pole.position.set(0.05, 2.45, -0.1); house.add(pole);
     flag.position.set(0.27, 2.68, -0.1); house.add(flag); house.userData.flag = flag;
-    house.userData.wins = wins;
+    house.userData.wins = wins; house.userData.hits = hitMeshes; house.userData.blockers = [cab, roof, plat];
   }
   house.updateMatrixWorld(true);
   const W = (x, y, z) => house.localToWorld(new THREE.Vector3(x, y, z));
@@ -384,9 +387,57 @@ function start() {
     // posun scény doprava na úvodu (text vlevo), na mobilu níž
     const hf = (1 - MU.smoothstep(p, 0.0, 0.12)) * (1 - ze);
     if (W_ > 1000) camera.setViewOffset(W_, H_, -W_ * 0.19 * hf, 0, W_, H_);
-    else if (W_ <= 760) camera.setViewOffset(W_, H_, 0, -H_ * 0.16 * hf, W_, H_);
+    else if (W_ <= 760) camera.setViewOffset(W_, H_, 0, H_ * 0.33 * hf, W_, H_);
     else camera.clearViewOffset();
   }
+
+
+  /* ---------- klikací okna domku (raycast) ---------- */
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  const hitTargets = [...house.userData.hits, ...house.userData.blockers];
+  const hintEl = document.createElement('div');
+  hintEl.className = 'window-hint'; hintEl.setAttribute('aria-hidden', 'true'); hintEl.innerHTML = '<span></span>Klikněte do okna';
+  if (document.getElementById('hero-title')) document.body.appendChild(hintEl);
+  const hintPos = new THREE.Vector3();
+  let hover = false, hoverT = 0, zoomOpen = false;
+  const heroVisible = () => window.scrollY < window.innerHeight * 0.7 && !root.classList.contains('win-open') && !!document.getElementById('hero-title');
+  const interactive = (t) => !t || !t.closest || t.closest('a,button,input,select,textarea,label,summary,.panel,.chip,.site-header,.winview,.main-nav,[data-hero],.window-teaser');
+  function hitWindow(cx, cy) {
+    ndc.set((cx / W_) * 2 - 1, -(cy / H_) * 2 + 1); ray.setFromCamera(ndc, camera);
+    const r = ray.intersectObjects(hitTargets, false)[0];
+    return !!(r && r.object.userData.isWin);
+  }
+  function updateHint() {
+    const show = heroVisible() && zoomT < 0.05;
+    hintEl.classList.toggle('on', show);
+    if (!show && hover) { hover = false; root.classList.remove('over-window'); }
+    if (!show) return;
+    hintPos.copy(house.userData.wins[0]); house.localToWorld(hintPos); hintPos.project(camera);
+    const x = (hintPos.x * 0.5 + 0.5) * W_, y = (-hintPos.y * 0.5 + 0.5) * H_;
+    hintEl.style.transform = `translate(${x.toFixed(1)}px, ${(y - 14).toFixed(1)}px) translate(-50%, -100%)`;
+  }
+  let moveQueued = false, mpx = 0, mpy = 0;
+  window.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return; mpx = e.clientX; mpy = e.clientY;
+    if (moveQueued) return; moveQueued = true;
+    requestAnimationFrame(() => {
+      moveQueued = false;
+      const over = heroVisible() && !interactive(document.elementFromPoint(mpx, mpy)) && hitWindow(mpx, mpy);
+      if (over !== hover) { hover = over; root.classList.toggle('over-window', over); if (reduce) frame(performance.now(), true); }
+    });
+  }, { passive: true });
+  let down = null;
+  window.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId, target: e.target }; }, { passive: true });
+  window.addEventListener('pointercancel', () => { down = null; }, { passive: true });
+  window.addEventListener('pointerup', (e) => {
+    const d = down; down = null;
+    if (!d || e.pointerId !== d.id || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    // tap ≠ tažení / scroll: malý posun a krátký stisk
+    if (Math.hypot(e.clientX - d.x, e.clientY - d.y) > 10 || performance.now() - d.t > 600) return;
+    if (!heroVisible() || interactive(d.target) || interactive(e.target)) return;
+    if (hitWindow(e.clientX, e.clientY) && window.__openWindowStory) window.__openWindowStory();
+  }, { passive: true });
+  if (reduce) { window.addEventListener('scroll', updateHint, { passive: true }); window.addEventListener('resize', updateHint, { passive: true }); }
 
   /* ---------- smyčka ---------- */
   let last = performance.now(), time = 0, acc = 0, slow = 0, frames = 0, running = true;
@@ -399,6 +450,10 @@ function start() {
     prog += (want - prog) * (reduce ? 1 : 1 - Math.exp(-dt * 3.2));
     applyState(prog, time, reduce);
     camera_(prog, time);
+    hoverT += ((hover ? 1 : 0) - hoverT) * (reduce ? 1 : 1 - Math.exp(-dt * 8));
+    { const pulse = reduce ? 1 : 1 + 0.16 * Math.sin(time * 2.4);
+      winMat.color.multiplyScalar(pulse * (1 + 0.55 * hoverT)); winGlow.material.opacity *= pulse * (1 + 0.5 * hoverT); }
+    updateHint();
     if (!reduce) {
       updateLeaves(time, dt);
       ladder.rotation.z = Math.sin(time * 0.9) * 0.025; ladder.rotation.x = Math.sin(time * 0.7 + 1) * 0.02;
