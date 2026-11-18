@@ -9,7 +9,7 @@
 | --- | --- | --- |
 | Náhled (statické HTML) | kořen repa: `index.html`, `estimate.html`, `references.html`, `privacy.html`, `legal-notice.html`, `terms.html`, `admin.html` | Běží na GitHub Pages bez PHP. Kalkulačka počítá v JS, odeslání formuláře se v náhledu jen zdvořile omluví (není tam `contact.php`). |
 | **Šablony pro PHP hosting** | `php-ready/*.php` | Totéž, ale se **stejnými názvy souborů, odkazy (`…php?lang=cz`), formuláři, názvy polí (`name`/`id`), `action="contact.php"` a `data-pricing` / `data-translations`** jako původní web. |
-| Nové styly a skripty | `assets/css/site.css`, `assets/js/fx.js`, `assets/js/nav.js`, `assets/js/hero.js`, `assets/js/scene-kid.js`, `assets/js/mini3d.js`, `assets/js/calculator.js`, `assets/images/treehouseweb-mark-light.svg` | `site.css` je **nový** soubor, nepřepisuje `style.css` ani `brand-overrides.css`. `calculator.js` je původní skript s drobnými úpravami (viz níže). |
+| Nové styly a skripty | `assets/css/site.css`, `assets/js/fx.js`, `assets/js/nav.js`, `assets/js/scene.js`, `assets/js/calculator.js`, `assets/images/treehouseweb-mark-light.svg` | `site.css` je **nový** soubor, nepřepisuje `style.css` ani `brand-overrides.css`. `calculator.js` je původní skript s drobnými úpravami (viz níže). |
 
 Načítá se z CDN (jsdelivr): Three.js 0.160, GSAP 3.12.5 a ScrollTrigger; fonty z Google Fonts (**Fraunces** display, **Manrope** text, **JetBrains Mono** štítky; latin-ext, `display=swap`, `preconnect`). Žádný build.
 
@@ -25,7 +25,7 @@ Načítá se z CDN (jsdelivr): Three.js 0.160, GSAP 3.12.5 a ScrollTrigger; font
 Tyto čtyři stránky jsou **nové, bez serverového kódu** (čistá česká statika). Stačí je nahrát vedle ostatních; nic v PHP je nevyžaduje. Odkazy v hlavní navigaci a patičce všech šablon na ně míří (`sluzby.php?lang=cz` apod.), proto nové šablony nasazujte všechny najednou. Do EN/DE/ES verzí se nové stránky nepřekládaly.
 
 Mobilní navigace je celoobrazovkové menu (`nav.js`): `aria-expanded`, focus trap, Esc, zamknutí scrollu. V `calculator.js` je původní kód mobilního menu zachován, ale vypíná se, je-li na `<html>` atribut `data-nav2` (nastavuje ho nová hlavička), takže původní šablony ostatních jazyků fungují dál.
-Sekce „Světlo v okně“ a klikací okna byly odstraněny (nahradil je 3D hero v dětské kresbě, viz níže).
+Sekce „Světlo v okně“ a klikací okna byla odstraněna. V hero je jen 3D strom s domkem; v okně sedí týpek u počítače a nad ním je myšlenková bublina „Jak se dělá web…?“ (HTML `#thought` v `index.php`, poloha se každý snímek promítá z 3D okna v `assets/js/scene.js`).
 Přechody mezi stránkami (wipe) a vlastní kurzor jsou v `fx.js` a při `prefers-reduced-motion` se vypínají.
 
 ## 2. Které části původního webu jsou PHP (serverový kód nemáme)
@@ -48,7 +48,7 @@ Ceník kalkulačky (viz bod 4) a jazyky (bod 5) jsou jediná místa, kde je pot�
 
 1. **Záloha** celého původního webu (bod 6) a stažení jeho PHP souborů lokálně, protože v nich jsou kusy kódu, které `php-ready` obsahuje jen jako zástupné značky.
 2. **Zkopírujte nové assety** do `assets/` na serveru (jen **přidat**, nic nemazat):
-   `assets/css/site.css`, `assets/js/fx.js`, `assets/js/nav.js`, `assets/js/hero.js`, `assets/js/scene-kid.js`, `assets/js/mini3d.js`, `assets/images/treehouseweb-mark-light.svg`.
+   `assets/css/site.css`, `assets/js/fx.js`, `assets/js/nav.js`, `assets/js/scene.js`, `assets/images/treehouseweb-mark-light.svg`.
 3. **Nahraďte** `assets/js/calculator.js` verzí z repa. Je to původní skript; změny jsou jen tyto (zpětně kompatibilní): zpracování odpovědi, která není JSON, ruční vyplnění zprávy z ceníkových tlačítek (`data-prefill`) a obsluha `[data-intent]` i na stránkách bez kalkulačky. Slevové kódy a odeslání formuláře volají dál `contact.php` stejně jako dřív, admin (řádky slevových kódů, mobilní menu, posuvník na referencích) funguje beze změny.
 4. **Šablony stránek** `index.php`, `estimate.php`, `references.php`, `privacy.php`, `legal-notice.php`, `terms.php` a nové `sluzby.php`, `normalni-web.php`, `3d-web.php`, `jak-pracujeme.php`: vezměte soubory z `php-ready/` a v nich **nahraďte zástupné značky původním PHP kódem** z původních souborů:
    - `__CSRF__` (skryté pole `csrf` a `data-csrf` u kalkulačky) → původní výraz pro CSRF token,
@@ -101,8 +101,5 @@ Redesign je zatím **jen česky** (nové texty ceníku, hero, štítky). Přepí
 - Ostatní jazyky viz bod 4.
 - Náhled je označen `noindex`, ostrá verze (`php-ready`) má původní `canonical` a `hreflang` (bez `noindex`).
 
-## Hero v dětské kresbě (3D, kolo 4)
-- Úvodní stránka (`index.php`) má v hero Three.js scénu domku na stromě (`assets/js/scene-kid.js`, načítá se líně z `assets/js/hero.js` až po načtení stránky). Three.js se bere z CDN jsdelivr přes `importmap` v `<head>` (stejná verze 0.160.0, i `three/addons/`). Ostatní stránky Three.js nenačítají; výjimka je malý domek na `3d-web.php` (`assets/js/mini3d.js`).
-- Záložní obrázek (poster, bez WebGL, při `prefers-reduced-motion`, při `saveData` a než se scéna načte) je v `assets/images/hero/` (AVIF/WebP/JPG, mobil + desktop, `<picture>` s `media`, preload v `<head>`). Alt text je česky.
-- Do hostingu stačí nahrát `assets/` (css, js, images/hero), a upravené `.php` šablony z `php-ready/`. PHP logika (kontaktní formulář, `data-pricing`, jazyky) se nemění.
-- Ceny v `admin.php` na serveru musí být 9 999 / 15 999 Kč (viz výše).
+## Hero: strom s týpkem a bublinou
+`index.php` obsahuje `<div class="thought" id="thought">` hned za `<body>` (bublina; bez WebGL se zobrazí u záložního obrázku stromu). Skript `assets/js/scene.js` ji kotví na okno domku. Žádná PHP logika se nemění; kontaktní formulář, `data-pricing`, jazyky a ceny zůstávají (v `admin.php` na serveru musí být 9 999 / 15 999 Kč).

@@ -17,21 +17,23 @@
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Manrope:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script>(function(){var d=document.documentElement;d.setAttribute('data-nav2','');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('js-anim');try{if(sessionStorage.getItem('thw-wipe')==='1')d.classList.add('wipe-in')}catch(e){}setTimeout(function(){if(!window.__fxReady){d.classList.remove('js-anim');d.classList.remove('wipe-in')}},4500)})()</script>
     <link rel="icon" type="image/svg+xml" href="assets/images/treehouseweb-mark-light.svg">
-    <link rel="preload" as="image" href="assets/images/hero/hero-m-720.avif" type="image/avif" media="(max-width:760px)" fetchpriority="high">
-    <link rel="preload" as="image" href="assets/images/hero/hero-d-1600.avif" type="image/avif" media="(min-width:761px)" fetchpriority="high">
     <link rel="stylesheet" href="assets/css/site.css">
+    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
     <script src="assets/js/calculator.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
     <script src="assets/js/nav.js" defer></script>
-    <script src="assets/js/hero.js" defer></script>
     <script src="assets/js/fx.js" defer></script>
+    <script type="module" src="assets/js/scene.js"></script>
 </head>
-<body id="top" class="kid home-photo">
+<body id="top">
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="veil" aria-hidden="true"></div>
+<div class="fallback-tree" aria-hidden="true"><img src="assets/images/treehouseweb-mark-light.svg" alt="" width="190" height="230"></div>
+<div class="thought" id="thought" aria-hidden="true"><div class="thought-in"><span class="thought-txt">Jak se dělá web…?</span><i class="dot d1"></i><i class="dot d2"></i></div></div>
 <a class="skip-link" href="#main">Přejít na obsah</a>
 <header class="site-header">
     <a class="brand" href="index.php?lang=cz" aria-label="Tree House Web"><img class="brand-symbol" src="assets/images/treehouseweb-mark-light.svg" alt="" width="34" height="42"><span>Tree House Web<span class="brand-dot">.</span></span></a>
@@ -43,35 +45,26 @@
     </div>
 </header>
 <main id="main">
-    <section class="photo-hero" aria-labelledby="hero-title">
-        <div class="ph-stage" data-ph data-cfg='{"d":{"w":[0.745,0.51],"p":[0.75,0.5],"ratio":1.7778,"lamps":[]},"m":{"w":[0.60,0.385],"p":[0.5,0.5],"ratio":0.5625,"lamps":[]}}'>
-            <div class="ph-zoom"><div class="ph-kb"><picture><source media="(max-width:760px)" type="image/avif" srcset="assets/images/hero/hero-m-576.avif 576w, assets/images/hero/hero-m-720.avif 720w" sizes="100vw"><source media="(max-width:760px)" type="image/webp" srcset="assets/images/hero/hero-m-576.webp 576w, assets/images/hero/hero-m-720.webp 720w" sizes="100vw"><source media="(max-width:760px)" srcset="assets/images/hero/hero-m-576.jpg 576w, assets/images/hero/hero-m-720.jpg 720w" sizes="100vw"><source type="image/avif" srcset="assets/images/hero/hero-d-1024.avif 1024w, assets/images/hero/hero-d-1600.avif 1600w" sizes="100vw"><source type="image/webp" srcset="assets/images/hero/hero-d-1024.webp 1024w, assets/images/hero/hero-d-1600.webp 1600w" sizes="100vw"><img class="ph-img" src="assets/images/hero/hero-d-1600.jpg" srcset="assets/images/hero/hero-d-1024.jpg 1024w, assets/images/hero/hero-d-1600.jpg 1600w" sizes="100vw" width="1600" height="900" alt="Domek na stromě v noci. V osvětleném okně sedí muž u počítače a řeší problém s webem." fetchpriority="high" decoding="async"></picture><span class="ph-glow" aria-hidden="true"></span></div></div>
-            <canvas class="ph-3d" aria-hidden="true"></canvas>
-            <div class="ph-mist" aria-hidden="true"><i></i><i></i></div>
-            <canvas class="ph-fx" aria-hidden="true"></canvas>
-            <div class="ph-shade" aria-hidden="true"></div>
-        </div>
-        <div class="hero wrap ph-content">
-            <div class="hero-surface">
-                <p class="eyebrow" data-hero><span class="status-dot"></span>Tree House Web · Nezávislé webové studio</p>
-                <h1 id="hero-title" data-split="hero">Hledání webaře nemusí být <em>trápení</em><span class="brand-dot">.</span></h1>
-                <h2 data-split="hero">Weby, kterým je rozumět.<br>Technika, která drží <em>krok.</em></h2>
-                <p class="hero-description" data-hero>Tvořím a modernizuji firemní weby. Od jednoduché jednostránkové prezentace až po bezpečnou migraci starého PHP.</p>
-                <div class="hero-chips" data-hero>
-                    <a class="chip" href="#cenik"><span>Normální web</span><strong>9&nbsp;999&nbsp;Kč</strong></a>
-                    <a class="chip is-3d" href="#cenik"><span>3D web</span><strong>15&nbsp;999&nbsp;Kč</strong></a>
-                </div>
-                <div class="hero-actions" data-hero>
-                    <a class="button primary" href="estimate.php?lang=cz" data-intent="estimate">Kalkulačka<img class="icon" src="assets/icons/arrow-up-right.svg" width="20" height="20" alt="" aria-hidden="true"></a>
-                    <a class="button" href="#cenik">Ceník</a>
-                </div>
-                <p class="hero-note" data-hero>Návrh úvodní stránky předem bez závazků. Doména od 300 Kč ročně.</p>
-                <a class="hero-work" data-hero href="references.php?lang=cz">Prohlédnout reference<img class="icon" src="assets/icons/arrow-right.svg" width="20" height="20" alt="" aria-hidden="true"></a>
+    <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-surface">
+            <p class="eyebrow" data-hero><span class="status-dot"></span>Nezávislé webové studio · Návrh, vývoj, správa</p>
+            <h1 id="hero-title" data-split="hero">Tree House Web<span class="brand-dot">.</span></h1>
+            <h2 data-split="hero">Weby, kterým je rozumět.<br>Technika, která drží <em>krok.</em></h2>
+            <p class="hero-description" data-hero>Tvořím a modernizuji firemní weby. Od jednoduché jednostránkové prezentace až po bezpečnou migraci starého PHP.</p>
+            <div class="hero-chips" data-hero>
+                <a class="chip" href="#cenik"><span>Normální web</span><strong>9&nbsp;999&nbsp;Kč</strong></a>
+                <a class="chip is-3d" href="#cenik"><span>3D web</span><strong>15&nbsp;999&nbsp;Kč</strong></a>
             </div>
+            <div class="hero-actions" data-hero>
+                <a class="button primary" href="estimate.php?lang=cz" data-intent="estimate">Zjistit cenu webu<img class="icon" src="assets/icons/arrow-up-right.svg" width="20" height="20" alt="" aria-hidden="true"></a>
+                <a class="button" href="#cenik">Zobrazit ceník</a>
+            </div>
+            <p class="hero-note" data-hero>Návrh úvodní stránky předem bez závazků. Doména od 300 Kč ročně.</p>
+            <a class="hero-work" data-hero href="references.php?lang=cz">Prohlédnout reference<img class="icon" src="assets/icons/arrow-right.svg" width="20" height="20" alt="" aria-hidden="true"></a>
         </div>
-        <div class="scroll-cue" aria-hidden="true"><i></i>Posuňte dolů</div>
+        <div class="scroll-cue" aria-hidden="true"><i></i>Posuňte dolů, strom se otáčí</div>
+        <div class="principle-strip" data-reveal><span><span class="mono">01</span>Nejdřív návrh, potom platba</span><span><span class="mono">02</span>Váš kód. Vaše vlastnictví.</span><span><span class="mono">03</span>Web na roky, ne závislost na dodavateli.</span></div>
     </section>
-    <div class="wrap principle-wrap"><div class="principle-strip" data-reveal><span><span class="mono">01</span>Nejdřív návrh, potom platba</span><span><span class="mono">02</span>Váš kód. Vaše vlastnictví.</span><span><span class="mono">03</span>Web na roky, ne závislost na dodavateli.</span></div></div>
 <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Normální web 9 999 Kč</span><i>✦</i><span>3D web 15 999 Kč</span><i>✦</i><span>Nejdřív návrh, potom platba</span><i>✦</i><span>Váš kód. Vaše vlastnictví.</span><i>✦</i><span>Web na roky, ne závislost na dodavateli</span><i>✦</i><span>Normální web 9 999 Kč</span><i>✦</i><span>3D web 15 999 Kč</span><i>✦</i><span>Nejdřív návrh, potom platba</span><i>✦</i><span>Váš kód. Vaše vlastnictví.</span><i>✦</i><span>Web na roky, ne závislost na dodavateli</span><i>✦</i></div></div>
     <section class="section wrap" id="services" aria-labelledby="services-title">
         <p class="eyebrow" data-reveal>01 / Co děláme</p>
