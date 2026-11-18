@@ -25,6 +25,7 @@ Načítá se z CDN (jsdelivr): Three.js 0.160, GSAP 3.12.5 a ScrollTrigger; font
 Tyto čtyři stránky jsou **nové, bez serverového kódu** (čistá česká statika). Stačí je nahrát vedle ostatních; nic v PHP je nevyžaduje. Odkazy v hlavní navigaci a patičce všech šablon na ně míří (`sluzby.php?lang=cz` apod.), proto nové šablony nasazujte všechny najednou. Do EN/DE/ES verzí se nové stránky nepřekládaly.
 
 Mobilní navigace je celoobrazovkové menu (`nav.js`): `aria-expanded`, focus trap, Esc, zamknutí scrollu. V `calculator.js` je původní kód mobilního menu zachován, ale vypíná se, je-li na `<html>` atribut `data-nav2` (nastavuje ho nová hlavička), takže původní šablony ostatních jazyků fungují dál.
+Na úvodní stránce je sekce „Světlo v okně“ (`assets/js/story.js`, dialog `#winview` v `index.php`): 3D kamera zoomuje k oknu domku, scénka člověka u počítače ukáže problém a pak Tree House Web jako řešení + odkaz na kalkulačku a poptávku, tlačítko „Zpět ven“ kameru vrátí. `story.js` je potřeba nahrát spolu s ostatními skripty.
 Přechody mezi stránkami (wipe) a vlastní kurzor jsou v `fx.js` a při `prefers-reduced-motion` se vypínají.
 
 ## 2. Které části původního webu jsou PHP (serverový kód nemáme)
@@ -47,7 +48,7 @@ Ceník kalkulačky (viz bod 4) a jazyky (bod 5) jsou jediná místa, kde je pot�
 
 1. **Záloha** celého původního webu (bod 6) a stažení jeho PHP souborů lokálně, protože v nich jsou kusy kódu, které `php-ready` obsahuje jen jako zástupné značky.
 2. **Zkopírujte nové assety** do `assets/` na serveru (jen **přidat**, nic nemazat):
-   `assets/css/site.css`, `assets/js/fx.js`, `assets/js/nav.js`, `assets/js/scene.js`, `assets/images/treehouseweb-mark-light.svg`.
+   `assets/css/site.css`, `assets/js/fx.js`, `assets/js/nav.js`, `assets/js/story.js`, `assets/js/scene.js`, `assets/images/treehouseweb-mark-light.svg`.
 3. **Nahraďte** `assets/js/calculator.js` verzí z repa. Je to původní skript; změny jsou jen tyto (zpětně kompatibilní): zpracování odpovědi, která není JSON, ruční vyplnění zprávy z ceníkových tlačítek (`data-prefill`) a obsluha `[data-intent]` i na stránkách bez kalkulačky. Slevové kódy a odeslání formuláře volají dál `contact.php` stejně jako dřív, admin (řádky slevových kódů, mobilní menu, posuvník na referencích) funguje beze změny.
 4. **Šablony stránek** `index.php`, `estimate.php`, `references.php`, `privacy.php`, `legal-notice.php`, `terms.php` a nové `sluzby.php`, `normalni-web.php`, `3d-web.php`, `jak-pracujeme.php`: vezměte soubory z `php-ready/` a v nich **nahraďte zástupné značky původním PHP kódem** z původních souborů:
    - `__CSRF__` (skryté pole `csrf` a `data-csrf` u kalkulačky) → původní výraz pro CSRF token,

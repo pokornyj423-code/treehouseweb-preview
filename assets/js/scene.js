@@ -338,6 +338,9 @@ function start() {
   const readScroll = () => { const m = document.documentElement.scrollHeight - window.innerHeight; target = m > 0 ? MU.clamp(window.scrollY / m, 0, 1) : 0; };
   readScroll(); window.addEventListener('scroll', readScroll, { passive: true });
   if (!reduce) window.addEventListener('pointermove', (e) => { mx = (e.clientX / W_ - 0.5) * 2; my = (e.clientY / H_ - 0.5) * 2; }, { passive: true });
+  let zoomTarget = 0, zoomT = 0;
+  const zCam = W(-0.45, 0.72, 1.75), zTgt = W(-0.55, 0.66, 0.59);
+  window.__zoomWindow = (on) => { zoomTarget = (on && !reduce) ? 1 : 0; };
   window.__setScenePrg = (p) => { override = p; if (reduce) frame(performance.now(), true); };
   // dotyk: natočení telefonu a tažení prstem nahrazují myš
   if (!reduce) {
@@ -371,12 +374,15 @@ function start() {
   function camera_(p, time) {
     const s = camCurve.getPoint(p), tg = tgtCurve.getPoint(p);
     smx += (mx - smx) * 0.05; smy += (my - smy) * 0.05;
-    tmpP.copy(s); tmpT.copy(tg);
+    const ze = zoomT * zoomT * (3 - 2 * zoomT);
+    tmpP.copy(s).lerp(zCam, ze); tmpT.copy(tg).lerp(zTgt, ze);
+    const baseFov = camera.aspect < 1 ? 62 : 42, wantFov = MU.lerp(baseFov, camera.aspect < 1 ? 48 : 30, ze);
+    if (Math.abs(camera.fov - wantFov) > 0.01) { camera.fov = wantFov; camera.updateProjectionMatrix(); }
     cR.set(1, 0, 0).applyQuaternion(camera.quaternion);
-    tmpP.addScaledVector(cR, smx * 0.7); tmpP.y += -smy * 0.35 + Math.sin(time * 0.25) * (reduce ? 0 : 0.08);
+    const pk = 1 - ze * 0.85; tmpP.addScaledVector(cR, smx * 0.7 * pk); tmpP.y += (-smy * 0.35 + Math.sin(time * 0.25) * (reduce ? 0 : 0.08)) * pk;
     camera.position.copy(tmpP); camera.lookAt(tmpT);
     // posun scény doprava na úvodu (text vlevo), na mobilu níž
-    const hf = 1 - MU.smoothstep(p, 0.0, 0.12);
+    const hf = (1 - MU.smoothstep(p, 0.0, 0.12)) * (1 - ze);
     if (W_ > 1000) camera.setViewOffset(W_, H_, -W_ * 0.19 * hf, 0, W_, H_);
     else if (W_ <= 760) camera.setViewOffset(W_, H_, 0, -H_ * 0.16 * hf, W_, H_);
     else camera.clearViewOffset();
@@ -388,7 +394,9 @@ function start() {
     const dt = Math.min((now - last) / 1000, 0.1); last = now;
     if (!reduce) time += dt;
     uniforms.uTime.value = reduce ? 3 : time;
-    prog += ((override != null ? override : target) - prog) * (reduce ? 1 : 1 - Math.exp(-dt * 3.2));
+    zoomT += (zoomTarget - zoomT) * (reduce ? 1 : 1 - Math.exp(-dt * 2.4));
+    const want = zoomTarget ? 0.62 : (override != null ? override : target);
+    prog += (want - prog) * (reduce ? 1 : 1 - Math.exp(-dt * 3.2));
     applyState(prog, time, reduce);
     camera_(prog, time);
     if (!reduce) {
